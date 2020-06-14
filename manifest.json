@@ -1,0 +1,27 @@
+{
+	"name": "Evaly Cashback Calculator",
+	"version": "1.3.0",
+	"manifest_version": 2,
+	"description": "Evaly Cashback Calculator",
+	"homepage_url": "https://github.com/sarequl",
+	"icons": {
+		"16": "icons/icon16.png",
+		"48": "icons/icon48.png",
+		"128": "icons/icon128.png"
+	},
+	"browser_action": {
+		"default_popup": "popup/index.html",
+		"default_icon": {
+			"16": "icons/icon16.png",
+			"48": "icons/icon48.png",
+			"128": "icons/icon128.png"
+		}
+	},
+	"content_scripts": [
+		{
+			"matches": ["https://*.evaly.com.bd/*"],
+			"js": ["content_script/discountDisplay.js"]
+		}
+	],
+	"permissions": ["cookies", "https://evaly.com.bd/"]
+}
