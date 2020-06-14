@@ -3,7 +3,9 @@
 import AppBar from './components/TopAppBar.svelte';
 import AppDrawer from './components/AppDrawer.svelte';
 import LoginCard from './components/LoginCard.svelte';
-import InvoiceCard from './components/InvoiceCard.svelte';
+import InvoiceList from './components/InvoiceList.svelte';
+import storage from './modules/storage'
+
 
 //state and functions
 import { onMount } from 'svelte';
@@ -13,7 +15,8 @@ onMount(() => {
     getToken(cookie => {
         if(cookie != null){
             loggedIn = true;
-            token.set(cookie)
+            token.set(cookie);
+            storage.set({token: cookie})
         }
     })
 })
@@ -23,7 +26,7 @@ let isOpen = false;
 {#if loggedIn}
 <AppBar clickHandler={() => isOpen = !isOpen}/>
 <AppDrawer state={isOpen}>
-    <InvoiceCard />
+    <InvoiceList />
 </AppDrawer>
 {:else}
 <LoginCard />

@@ -12,6 +12,7 @@
     active2 = value;
     state = false;
   }
+
 </script>
 
 <section>

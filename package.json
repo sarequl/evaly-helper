@@ -1,18 +1,19 @@
 {
-	"name": "smui-example-rollup",
-	"version": "1.0.0",
-	"description": "An example project implementing Svelte Material UI with Rollup.",
-	"main": "index.js",
+	"name": "evaly-helper",
+	"version": "1.4.0",
+	"description": " An Extension to display comprehensive cashback information on evaly website.",
+	"main": "svelte-src/app.js",
 	"scripts": {
 		"build": "rollup -c rollup.config.js",
 		"serve": "serve ./popup",
 		"watch": "rollup -c rollup.config.js --watch",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
-	"author": "Hunter Perrin <hperrin@gmail.com>",
-	"license": "Apache-2.0",
+	"author": "Shahriar Shojib <shahriar_shojib@hotmail.com>",
+	"license": "MIT",
 	"devDependencies": {
 		"@material/typography": "^3.1.0",
+		"chrome-storage-promise": "^0.1.0",
 		"material-icons": "^0.3.1",
 		"node-sass": "^4.14.1",
 		"rollup": "^1.30.1",
