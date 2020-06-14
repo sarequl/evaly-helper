@@ -6,3 +6,4 @@ export default function getCookie(callback) {
 
 
 export const token = writable('none');
+export const spinner = writable(false);

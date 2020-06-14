@@ -61,9 +61,7 @@
       <Scrim />
       <AppContent class="app-content">
         <main class="main-content">
-          <!-- <Button on:click={() => state = !state}><Label>Toggle Drawer</Label></Button>
-          <br />
-          <pre class="status">Active: {active2}</pre> -->
+          <slot></slot>
         </main>
       </AppContent>
     </div>
@@ -74,12 +72,12 @@
 <style>
   .drawer-container {
     position: relative;
-    display: flex;
-    height: 350px;
-    max-width: 600px;
+    height: 100%;
+    max-width: 100%;
     border: 1px solid rgba(0,0,0,.1);
     overflow: hidden;
     z-index: 0;
+    margin-top:55px;
   }
 
   * :global(.mdc-drawer--modal, .mdc-drawer-scrim) {
@@ -95,9 +93,10 @@
   }
 
   .main-content {
-    overflow: auto;
     padding: 16px;
-    height: 100%;
+    height: auto;
     box-sizing: border-box;
+    z-index: 1;
+    position: relative;
   }
 </style>

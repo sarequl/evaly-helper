@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"build": "rollup -c rollup.config.js",
-		"serve": "serve popup",
+		"serve": "serve ./popup",
 		"watch": "rollup -c rollup.config.js --watch",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
