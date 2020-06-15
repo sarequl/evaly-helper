@@ -1,0 +1,6 @@
+@import "@material/button/mixins";
+@import "@material/shape/variables";
+
+.button-shaped-round {
+    @include mdc-button-shape-radius(999px);
+}

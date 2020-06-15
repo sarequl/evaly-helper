@@ -19,7 +19,6 @@
         </Section>
       </Row>
     </TopAppBar>
-		
 		{#if $spinner}
 			<LinearProgress indeterminate />
 		{/if}
@@ -29,6 +28,7 @@
 		min-width: 100%;
 		top:0;
 		position: fixed;
-		z-index: 100;
+    z-index: 100;
   }
+
 </style>

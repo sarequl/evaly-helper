@@ -80,6 +80,10 @@
     z-index: 0;
     margin-top:55px;
   }
+  .drawer-container::-webkit-scrollbar{
+    display: block;
+    width: 10px;
+  }
 
   * :global(.mdc-drawer--modal, .mdc-drawer-scrim) {
     /* This is not needed for a page-wide modal. */

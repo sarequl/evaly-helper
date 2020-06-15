@@ -4,13 +4,15 @@ body {
     padding: 0;
     min-height: 600px;
 }
+
 /* Scrollbar Styling */
 ::-webkit-scrollbar {
     width: 10px;
+    display: none;
 }
- 
+
 ::-webkit-scrollbar-track {
-    background-color: #ebebeb;
+    background-color: #fff;
     -webkit-border-radius: 10px;
     border-radius: 10px;
 }
@@ -18,5 +20,5 @@ body {
 ::-webkit-scrollbar-thumb {
     -webkit-border-radius: 10px;
     border-radius: 10px;
-    background: #6d6d6d; 
+    background: #405276;
 }
