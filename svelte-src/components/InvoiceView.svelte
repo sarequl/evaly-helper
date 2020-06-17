@@ -2,22 +2,37 @@
 import './buttons.scss';
 import ActionButton from './ActionButton.svelte';
 import Fab, {Label, Icon} from '@smui/fab';
-import Paper, {Title, Subtitle, Content} from '@smui/paper';
+import Paper, {Title, Content} from '@smui/paper';
+import OrderStatusPaper from './OrderStatusPaper.svelte';
+import OrderItem from './OrderItem.svelte';
 import {token, spinner, detailedView } from '../app';
 import getInvoice from '../modules/invoice';
 import {onMount} from 'svelte';
+
 let invoiceData = false;
+$: note = '';
+$: status = '';
 onMount(async () => {
 	invoiceData = await getInvoice($detailedView)
+	note = invoiceData.history[0].note;
+	status = invoiceData.history[0].order_status;
+	console.log(invoiceData);
 	window.scrollTo(0, 0);
 	}
 );
 
+function changeHistory(id){
+	note = invoiceData.history[id].note;
+	status = invoiceData.history[id].order_status;
+}
+
 function goBack(){
     detailedView.set(1);
 }
-let spinOn = () => spinner.set(true)
-let spinOff = () => spinner.set(false)
+
+let spinOn = () => spinner.set(true);
+let spinOff = () => spinner.set(false);
+
 </script>
 
 {#if !invoiceData}
@@ -33,20 +48,23 @@ let spinOff = () => spinner.set(false)
 					<div class="line">
 					</div>
 					<div class="progress">
-						<Fab color="primary" class="fabMargin"><Icon class="material-icons">check_circle_outline</Icon></Fab>
-						<Fab color="primary" class="fabMargin"><Icon class="material-icons">check_circle</Icon></Fab>
-						<Fab color="primary"><Icon class="material-icons">check_circle</Icon></Fab>
+						<Fab color="primary" class="fabMargin" on:click={() => changeHistory(0)} ><Icon class="material-icons">check_circle_outline</Icon></Fab>
+						<Fab color="primary" class="fabMargin" on:click={() => changeHistory(1)} ><Icon class="material-icons">check_circle</Icon></Fab>
+						<Fab color="primary"><Icon class="material-icons" on:click={() => changeHistory(2)} >check_circle</Icon></Fab>
 					</div>
-					<Paper elevation={9} color={'primary'} class="progressPaper">
-						<Title>{invoiceData.history[0].order_status}</Title>
-						<Content>
-							<p>{invoiceData.history[0].note}</p>
-						</Content>
-					</Paper>
+					<OrderStatusPaper note={note} status={status} />
 				</Paper>
 			</Content>
-
+			<Title class="secondaryTitle">Items</Title>
+			<Content>
+				{#each invoiceData.order_items as product}
+					<OrderItem item={product} />
+				{/each}
+			</Content>
+			<Title class="secondaryTitle">Shop</Title>
+			<Content>Coming soon</Content>
 		</Paper>
+		
 	</div>
 {/if}
 
@@ -55,6 +73,11 @@ let spinOff = () => spinner.set(false)
 
 	* :global(.invoiceTitle){
 		margin-top: 15px;
+	}
+
+	* :global(.secondaryTitle){
+		margin-top: 15px;
+		margin-bottom: 15px;
 	}
 
 	aside{

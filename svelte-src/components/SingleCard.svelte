@@ -27,11 +27,11 @@ function changeView(id){
             </Title>
             <Content>
                 <Paper class="detailsPaper" elevation={9} color={'primary'}>
-                    <Title class="amount">TK {amount}</Title>
+                    <Title class="amount">TK {parseInt(amount).toFixed()}</Title>
                     <Content>
                         <p>{shopName}</p>
                         <p>{parseDate(date)}</p>
-                        <ActionButton clickHandler={() => changeView(invoiceID)} icon={'arrow_forward'} text={'Go To Details'} />
+                        <ActionButton clickHandler={() => changeView(invoiceID)} icon={'arrow_forward'} text={'Go To Details'} first={false} />
                     </Content>
                 </Paper>
             </Content>
