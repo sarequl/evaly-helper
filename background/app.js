@@ -114,7 +114,6 @@ async function main() {
 		if (!findExisting(order.invoice_no, existingData)) {
 			newOrders.push(order);
 		}
-
 	});
 	const currentData = [...newOrders, ...existingData]; //join new orders and current orders
 
@@ -148,11 +147,8 @@ function findExisting(id, array) { //returns false if the item does not exist
 
 chrome.runtime.onInstalled.addListener(() => {
 	// create alarm after extension is installed / upgraded
-	chrome.alarms.create('refresh', { periodInMinutes: 30 });
-	console.log('trigerred');
+	chrome.alarms.create('refresh', { periodInMinutes: 10 });
 	firstData();
 });
 
-chrome.alarms.onAlarm.addListener(() => {
-	main();
-});
+chrome.alarms.onAlarm.addListener(main);
