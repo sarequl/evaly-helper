@@ -71,15 +71,15 @@ class EvalyAccount {
 }
 
 async function getInvoice(invoiceID) {
-	let access = await storage.get('token');
+	const { token } = await storage.get('token');
 	const { data = history } = await fetch(`https://api.evaly.com.bd/core/orders/histories/${invoiceID}/`, {
 		'headers': {
-			'authorization': 'Bearer ' + access.token,
+			'authorization': 'Bearer ' + token,
 		},
 	}).then(res => res.json());
 	const details = await fetch(`https://api.evaly.com.bd/core/custom/orders/${invoiceID}/`, {
 		'headers': {
-			'authorization': 'Bearer ' + access.token,
+			'authorization': 'Bearer ' + token,
 		},
 	}).then(res => res.json());
 	return { ...details, history: { ...data.histories } };
@@ -87,8 +87,8 @@ async function getInvoice(invoiceID) {
 
 async function firstData() {
 	if (await getToken()) {
-		const tokenObj = await storage.get('token');
-		const account = new EvalyAccount(tokenObj.token);
+		const { token } = await storage.get('token');
+		const account = new EvalyAccount(token);
 		const orders = await account.getOrders({ cancel: false, pending: false });
 		const orderWithStatus = await Promise.all(orders.map(async order => {
 			const { history, shop } = await getInvoice(order.invoice_no);
@@ -101,31 +101,34 @@ async function firstData() {
 async function main() {
 	if (!getToken()) return; //stop executing if the user is not logged in
 
-	const tokenObj = await storage.get('token');
-	const account = new EvalyAccount(tokenObj.token);
+	const { token } = await storage.get('token');
+	const account = new EvalyAccount(token);
 	const orders = await account.getOrders({ cancel: true, pending: false });
 	const orderWithStatus = await Promise.all(orders.map(async order => {
 		const { history, shop } = await getInvoice(order.invoice_no);
 		return { history, shop, ...order };
 	}));
-	const existingData = await storage.get('orders');
+	const { orders: existingData } = await storage.get('orders');
 	const newOrders = [];
 	orderWithStatus.forEach(order => {
-		if (!findExisting(order.invoice_no, existingData.orders)) {
+		if (!findExisting(order.invoice_no, existingData)) {
 			newOrders.push(order);
 		}
 
 	});
-	const currentData = [...newOrders, ...existingData.orders]; //join new orders and current orders
+	const currentData = [...newOrders, ...existingData]; //join new orders and current orders
 
 	const nonExistingCancelledOrders = currentData.filter(order => { //remove cancelled orders that does not exist in the current DB;
-		if (order.order_status !== 'cancel') {
-			return findExisting(order.invoice_no, existingData.orders);
+		if (order.order_status === 'cancel') {
+			return findExisting(order.invoice_no, existingData);
+		} else if (order.order_status !== 'cancel') {
+			return true;
 		}
+		return false;
 	});
 
 	const newData = nonExistingCancelledOrders.map(order => { //add a tag to the updated orders
-		if (!findExisting(order.invoice_no, existingData.orders)) {
+		if (!findExisting(order.invoice_no, existingData)) {
 			order.isUpdated = Date.now();
 		}
 		return order;
@@ -135,8 +138,8 @@ async function main() {
 
 function findExisting(id, array) { //returns false if the item does not exist
 	const filteredArr = array.filter(({ invoice_no }) => {
-		if (id === invoice_no) return false;
-		return true;
+		if (id === invoice_no) return true;
+		return false;
 	});
 	if (filteredArr.length === 0) return false;
 	return true;
@@ -145,7 +148,7 @@ function findExisting(id, array) { //returns false if the item does not exist
 
 chrome.runtime.onInstalled.addListener(() => {
 	// create alarm after extension is installed / upgraded
-	chrome.alarms.create('refresh', { periodInMinutes: 10 });
+	chrome.alarms.create('refresh', { periodInMinutes: 30 });
 	console.log('trigerred');
 	firstData();
 });

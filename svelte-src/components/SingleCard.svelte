@@ -2,12 +2,19 @@
 import ActionButton from './ActionButton.svelte';
 import Paper, {Title, Content} from '@smui/paper';
 import {parseDate , detailedView } from '../app';
-export let status;
-export let invoiceID;
-export let date;
-export let amount;
-export let statusPrev;
-export let shopName
+export let orderDetails;
+const { order_status, invoice_no, history , date, total, shop, isUpdated} = orderDetails;
+
+function showUpdateBadge(){
+    const currentDate = Date.now()
+    if ('isUpdated' in orderDetails){
+        const time = currentDate - isUpdated;
+        if( (((time / 1000) /60) / 60) / 24 < 7){
+            return true
+        }
+    }
+    return false;
+}
 
 function changeView(id){
     detailedView.set(id)
@@ -18,20 +25,25 @@ function changeView(id){
     <Paper class="paper-bg">
         <div class="invoice-card">
             <Title class="title">
-                {invoiceID} 
-                <div class="{status} common" > 
-                    {statusPrev}
+                {invoice_no} 
+                <div class="{order_status} common" > 
+                    {history[1].order_status}
                     <span class="material-icons">arrow_right_alt</span>
-                    {status}
+                    {order_status}
                 </div>
             </Title>
             <Content>
                 <Paper class="detailsPaper" elevation={9} color={'primary'}>
-                    <Title class="amount">TK {parseInt(amount).toFixed()}</Title>
+                    <Title class="amount">
+                        TK {parseInt(total).toFixed()}
+                        {#if showUpdateBadge()}
+                            <div class="updatedBadge">updated</div>
+                        {/if}
+                    </Title>
                     <Content>
-                        <p>{shopName}</p>
+                        <p>{shop.name}</p>
                         <p>{parseDate(date)}</p>
-                        <ActionButton clickHandler={() => changeView(invoiceID)} icon={'arrow_forward'} text={'Go To Details'} first={false} />
+                        <ActionButton clickHandler={() => changeView(invoice_no)} icon={'arrow_forward'} text={'Go To Details'} first={false} />
                     </Content>
                 </Paper>
             </Content>
@@ -89,6 +101,18 @@ span{
 	text-transform: uppercase;
 	display: inline-block;
 	width: 204px;
+}
+.updatedBadge{
+    width: 90px;
+	margin-left: 170px;
+	background: #21d481;
+	box-shadow: 0px 2px 5px 0px rgba(4, 109, 60, 0.48);
+	font-size: 13.5px;
+	border-radius: 16px;
+	font-weight: 500;
+	text-align: center;
+	text-transform: uppercase;
+	display: inline-block;
 }
 .processing {
     background: #3c2bff;

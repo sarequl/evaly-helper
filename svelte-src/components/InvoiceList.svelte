@@ -14,10 +14,10 @@ onMount(main);
         {#if $orders.length !== 0}
             <!-- add order length, balance etc[todo] -->
             {#each $orders as order}
-                <SingleCard status={order.order_status} statusPrev={order.history[1].order_status} shopName={order.shop.name} invoiceID={order.invoice_no} amount={order.total} date={order.date}/>
+                <SingleCard orderDetails={order} />
             {/each}
         {:else}
-            <p>no data yet, Fetching your orders, please wait...</p>
+            <h3>no data yet, Fetching your orders, please wait...</h3>
         {/if}
     {:else}
         <svelte:component this={InvoiceView}></svelte:component>

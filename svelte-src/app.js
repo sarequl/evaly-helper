@@ -29,43 +29,50 @@ export default async function getToken() {
 export async function main(reload) {
 	spinner.set(true);
 	if (reload) {
-		const tokenObj = await storage.get('token');
-		const account = new EvalyAccount(tokenObj.token);
+		const { token } = await storage.get('token');
+		const account = new EvalyAccount(token);
 		const orders = await account.getOrders({ cancel: true, pending: false });
 		const orderWithStatus = await Promise.all(orders.map(async order => {
 			const { history, shop } = await getInvoice(order.invoice_no);
 			return { history, shop, ...order };
 		}));
-		const existingData = await storage.get('orders');
+		const { orders: existingData } = await storage.get('orders');
 		const newOrders = [];
 		orderWithStatus.forEach(order => {
-			if (!findExisting(order.invoice_no, existingData.orders)) {
+			if (!findExisting(order.invoice_no, existingData)) {
 				newOrders.push(order);
 			}
 
 		});
-		const currentData = [...newOrders, ...existingData.orders]; //join new orders and current orders
+		const currentData = [...newOrders, ...existingData]; //join new orders and current orders
 
 		const nonExistingCancelledOrders = currentData.filter(order => { //remove cancelled orders that does not exist in the current DB;
-			if (order.order_status !== 'cancel') {
-				return findExisting(order.invoice_no, existingData.orders);
+			if (order.order_status === 'cancel') {
+				return findExisting(order.invoice_no, existingData);
+			} else if (order.order_status !== 'cancel') {
+				return true;
 			}
+			return false;
 		});
 
 		const newData = nonExistingCancelledOrders.map(order => { //add a tag to the updated orders
-			if (!findExisting(order.invoice_no, existingData.orders)) {
+			if (!findExisting(order.invoice_no, existingData)) {
 				order.isUpdated = Date.now();
 			}
 			return order;
 		});
 		await storage.set({ orders: newData });
 	}
-	const ordersObj = await storage.get('orders').catch(e => {
-		console.log('probably first time.. fetching orders. \n', e);
-		main(true);
-		return { orders: [] };
-	});
-	orders.set(ordersObj.orders);
+
+	try {
+		const { orders: serverOrders } = await storage.get('orders').catch(e => {
+			console.log('probably first time.. fetching orders. \n', e);
+			main(true);
+		});
+		orders.set(serverOrders);
+	} catch (e) {
+		console.log(e);
+	}
 	spinner.set(false);
 }
 
