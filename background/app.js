@@ -119,19 +119,17 @@ async function main() {
 	const currentData = [...newOrders, ...existingData.orders]; //join new orders and current orders
 
 	const nonExistingCancelledOrders = currentData.filter(order => { //remove cancelled orders that does not exist in the current DB;
-		if (order.order_status === 'cancel') {
+		if (order.order_status !== 'cancel') {
 			return findExisting(order.invoice_no, existingData.orders);
 		}
 	});
 
 	const newData = nonExistingCancelledOrders.map(order => { //add a tag to the updated orders
-		if (findExisting(order.invoice_no, existingData.orders)) {
+		if (!findExisting(order.invoice_no, existingData.orders)) {
 			order.isUpdated = Date.now();
 		}
 		return order;
 	});
-
-
 	await storage.set({ orders: newData });
 }
 

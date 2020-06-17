@@ -26,13 +26,14 @@ function changeView(id){
                 </div>
             </Title>
             <Content>
-                <h4>TK {amount}</h4>
-                <small>{shopName}</small><br>
-                <small>{parseDate(date)}</small>
-                <div class="invoiceButton">
-                    <ActionButton clickHandler={() => changeView(invoiceID)} icon={'arrow_forward'} text={'Go To Details'} />
-                </div>
-                
+                <Paper class="detailsPaper" elevation={9} color={'primary'}>
+                    <Title class="amount">TK {amount}</Title>
+                    <Content>
+                        <p>{shopName}</p>
+                        <p>{parseDate(date)}</p>
+                        <ActionButton clickHandler={() => changeView(invoiceID)} icon={'arrow_forward'} text={'Go To Details'} />
+                    </Content>
+                </Paper>
             </Content>
         </div>
     </Paper>
@@ -45,14 +46,14 @@ span{
 * :global(.fab){
     margin-inline-start: 93px;
 }
-.invoiceButton{
-    position: absolute;
-    display: inline-block;
-	right: 5px;
-	bottom: 0;
+* :global(.detailsPaper){
+    margin: 12px 0 3px 0px;
+	padding: 15px;
 }
-small{
-    font-style: italic;
+
+* :global(.detailsPaper p){
+    margin-block-start: 5px;
+	margin-block-end: 5px;
 }
 .invoice-card{
     margin:0;
@@ -61,10 +62,7 @@ small{
     margin-block-start: 0!important;
     position: relative;
 }
-.invoice-card h4{
-    margin-block-end: 0;
-	margin-block-start: 0;
-}
+
 
 * :global(.paper-bg){
     color: #fff;

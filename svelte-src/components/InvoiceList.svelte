@@ -1,6 +1,6 @@
 <script>
 import { onMount } from 'svelte';
-import {token, spinner, detailedView } from '../app';
+import { detailedView } from '../app';
 import SingleCard from './SingleCard.svelte';
 import InvoiceView from './InvoiceView.svelte';
 
@@ -8,6 +8,7 @@ import InvoiceView from './InvoiceView.svelte';
 import {main, orders} from '../app'
 onMount(main);
 </script>
+
 <div class="list">
     {#if $detailedView === 1}
         {#if $orders.length !== 0}
