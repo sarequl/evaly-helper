@@ -1,14 +1,17 @@
 {
-	"name": "Evaly Cashback Calculator",
-	"version": "1.4.0",
+	"name": "Evaly helper",
+	"version": "1.5.0",
 	"manifest_version": 2,
-	"description": "Evaly Cashback Calculator",
+	"description": "Evaly helper",
 	"homepage_url": "https://github.com/shahriar-shojib/evaly-helper",
+	"permissions": ["alarms", "storage", "cookies", "https://evaly.com.bd/"],
+
 	"icons": {
 		"16": "icons/icon16.png",
 		"48": "icons/icon48.png",
 		"128": "icons/icon128.png"
 	},
+
 	"browser_action": {
 		"default_popup": "popup/index.html",
 		"default_icon": {
@@ -17,11 +20,16 @@
 			"128": "icons/icon128.png"
 		}
 	},
+
 	"content_scripts": [
 		{
 			"matches": ["https://*.evaly.com.bd/*"],
 			"js": ["content_script/discountDisplay.js"]
 		}
 	],
-	"permissions": ["storage", "cookies", "https://evaly.com.bd/"]
+
+	"background": {
+		"scripts": ["background/app.js"],
+		"persistent": false
+	}
 }

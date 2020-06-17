@@ -1,11 +1,13 @@
 <script>
+import ActionButton from './ActionButton.svelte';
 import Paper, {Title, Content} from '@smui/paper';
-import Fab, {Icon} from '@smui/fab';
 import {parseDate , detailedView } from '../app';
 export let status;
 export let invoiceID;
 export let date;
 export let amount;
+export let statusPrev;
+export let shopName
 
 function changeView(id){
     detailedView.set(id)
@@ -15,18 +17,39 @@ function changeView(id){
 <div class="paper">
     <Paper class="paper-bg">
         <div class="invoice-card">
-            <Title class="title">{invoiceID} <span class="{status}" >{status}</span></Title>
+            <Title class="title">
+                {invoiceID} 
+                <div class="{status} common" > 
+                    {statusPrev}
+                    <span class="material-icons">arrow_right_alt</span>
+                    {status}
+                </div>
+            </Title>
             <Content>
                 <h4>TK {amount}</h4>
+                <small>{shopName}</small><br>
                 <small>{parseDate(date)}</small>
-                <Fab on:click={() => changeView(invoiceID)} class="fab" color="primary" mini><Icon class="material-icons">arrow_forward</Icon></Fab>
+                <div class="invoiceButton">
+                    <ActionButton clickHandler={() => changeView(invoiceID)} icon={'arrow_forward'} text={'Go To Details'} />
+                </div>
+                
             </Content>
         </div>
     </Paper>
 </div>
 <style>
+span{
+    vertical-align: middle;
+	padding-bottom: 4px;
+}
 * :global(.fab){
     margin-inline-start: 93px;
+}
+.invoiceButton{
+    position: absolute;
+    display: inline-block;
+	right: 5px;
+	bottom: 0;
 }
 small{
     font-style: italic;
@@ -36,6 +59,7 @@ small{
     line-height: 0;
     margin-block-end: 0!important;
     margin-block-start: 0!important;
+    position: relative;
 }
 .invoice-card h4{
     margin-block-end: 0;
@@ -58,33 +82,33 @@ small{
 .paper{
     margin-bottom: 15px;
 }
-span{
-    align-self: flex-end;
-    margin-left: 100px;
-    padding: 6px;
-    font-size: 60%;
-    border-radius: 5px;
-    font-weight: 600;
-    text-align: center;
-    text-transform: uppercase;
+.common{
+    margin-left: 30px;
+	font-size: 13.5px;
+	border-radius: 16px;
+	font-weight: 500;
+	text-align: center;
+	text-transform: uppercase;
+	display: inline-block;
+	width: 204px;
 }
-span.processing {
+.processing {
     background: #3c2bff;
 	box-shadow: 2px 2px 9px 0 #3c2bff6e;
 }
-span.shipped {
+.shipped {
     background: #8b19ff;
 	box-shadow: 2px 2px 9px 0 #8b19ff8f;
 }
-span.delivered {
+.delivered {
     background: #f321e2;
     box-shadow: 2px 2px 9px 0px #f3216796;
 }
-span.cancel {
+.cancel {
     background: #f32121;
     box-shadow: 2px 2px 9px 0px #f3212196;
 }
-span.picked {
+.picked {
     background: #f36e21;
     box-shadow: 2px 2px 9px 0px #f3872196;
 }

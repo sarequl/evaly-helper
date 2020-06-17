@@ -24,7 +24,7 @@ function main() {
 	if (document.querySelectorAll('.md\\:w-4\\/12.lg\\:w-3\\/12 li') !== null) { //selector for category list items
 		const cat = document.querySelectorAll('.md\\:w-4\\/12.lg\\:w-3\\/12 li');
 		cat.forEach(category => category.addEventListener('click', () => {
-			setTimeout(calculateAndInsert, 500);
+			setTimeout(calculateAndInsert, 1000);
 		}));
 	}
 
@@ -39,6 +39,7 @@ function main() {
 
 function calculateAndInsert() { //inserts discounts for all the visible products on the page
 	const products = document.querySelector('.product-grid');
+	products.style.gridTemplateColumns = 'repeat(auto-fill,minmax(300px,1fr))';
 	products.childNodes.forEach(insertDiscount);
 }
 

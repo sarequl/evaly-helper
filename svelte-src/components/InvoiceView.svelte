@@ -1,13 +1,17 @@
 <script>
 import './buttons.scss';
+import ActionButton from './ActionButton.svelte';
 import Fab, {Label, Icon} from '@smui/fab';
 import Paper, {Title, Subtitle, Content} from '@smui/paper';
-import Button from '@smui/button';
 import {token, spinner, detailedView } from '../app';
 import getInvoice from '../modules/invoice';
 import {onMount} from 'svelte';
 let invoiceData = false;
-onMount(async () => invoiceData = await getInvoice($detailedView))
+onMount(async () => {
+	invoiceData = await getInvoice($detailedView)
+	window.scrollTo(0, 0);
+	}
+);
 
 function goBack(){
     detailedView.set(1);
@@ -22,7 +26,7 @@ let spinOff = () => spinner.set(false)
 	<aside>{spinOff()}</aside>
 	<div class="paper-container">
 		<Paper elevation={9} color={'primary'} >
-			<Button  on:click={goBack} variant="raised" color="secondary" class="button-shaped-round"><Icon class="material-icons">arrow_back</Icon> <Label>Go Back</Label></Button>
+			<ActionButton clickHandler={goBack} icon={'arrow_back'} text={'Go Back'} />
 			<Title class="invoiceTitle">{invoiceData.invoice_no}</Title>
 			<Content>
 				<Paper elevation={2} class="progressPaper">
@@ -61,10 +65,13 @@ let spinOff = () => spinner.set(false)
 		margin-top:20px;
 	}
 
+	.line{
+		position: relative;
+	}
 	.line:before{
 		content: '';
 		position: absolute;
-		top: 42%;
+		top: 30px;
 		left: 33%;
 		border-top: 1px solid #1152df;
 		background: #1152df;

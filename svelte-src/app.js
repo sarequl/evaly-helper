@@ -1,10 +1,12 @@
 import { writable } from 'svelte/store';
 import storage from './modules/storage';
+import getInvoice from './modules/invoice';
 import EvalyAccount from './modules/evalyAccount';
+
 
 export const token = writable('none');
 export const spinner = writable(false);
-export const orders = writable(null);
+export const orders = writable([]);
 export const detailedView = writable(1);
 
 //get Token and save to store and LocalStorage
@@ -30,12 +32,17 @@ export async function main(reload) {
 		const tokenObj = await storage.get('token');
 		const account = new EvalyAccount(tokenObj.token);
 		const orders = await account.getOrders({ cancel: false, pending: false });
-		await storage.set({ orders });
+		const orderWithStatus = await Promise.all(orders.map(async order => {
+			const { history, shop } = await getInvoice(order.invoice_no);
+			return { history, shop, ...order };
+		}));
+		console.log(orderWithStatus);
+		await storage.set({ orders: orderWithStatus });
 	}
 	const ordersObj = await storage.get('orders').catch(e => {
 		console.log('probably first time.. fetching orders. \n', e);
 		main(true);
-		return { orders: 'DummyData' };
+		return { orders: [] };
 	});
 	orders.set(ordersObj.orders);
 	spinner.set(false);
