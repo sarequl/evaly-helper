@@ -20,7 +20,11 @@ module.exports = {
 			dedupe: importee => importee === 'svelte' || importee.startsWith('svelte/')
 		}),
 		commonjs(),
-		terser(),
+		terser({
+			output: {
+				comments: false,
+			}
+		}),
 		postcss({
 			extract: true,
 			minimize: true,
