@@ -50,7 +50,7 @@ let spinOff = () => spinner.set(false);
 					<div class="progress">
 						<Fab color="primary" class="fabMargin" on:click={() => changeHistory(0)} ><Icon class="material-icons">check_circle_outline</Icon></Fab>
 						<Fab color="primary" class="fabMargin" on:click={() => changeHistory(1)} ><Icon class="material-icons">check_circle</Icon></Fab>
-						<Fab color="primary"><Icon class="material-icons" on:click={() => changeHistory(2)} >check_circle</Icon></Fab>
+						<Fab color="primary" on:click={() => changeHistory(2)}><Icon class="material-icons" >check_circle</Icon></Fab>
 					</div>
 					<OrderStatusPaper note={note} status={status} />
 				</Paper>
