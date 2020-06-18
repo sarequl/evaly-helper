@@ -33,15 +33,8 @@ export async function main(reload) {
 		const account = new EvalyAccount(token);
 		const orders = await account.getOrders({ cancel: true, pending: false });
 		const { orders: existingData } = await storage.get('orders');
-		const newOrders = [];
-		orders.forEach(order => {
-			if (!findExisting(order.invoice_no, existingData)) {
-				newOrders.push(order);
-			}
-		});
-		const currentData = [...newOrders, ...existingData]; //join new orders and current orders
 
-		const nonExistingCancelledOrders = currentData.filter(order => { //remove cancelled orders that does not exist in the current DB;
+		const newOrders = orders.filter(order => { //remove cancelled orders that does not exist in the current DB;
 			if (order.order_status === 'cancel') {
 				return findExisting(order.invoice_no, existingData);
 			} else if (order.order_status !== 'cancel') {
@@ -50,17 +43,19 @@ export async function main(reload) {
 			return false;
 		});
 
-		const orderWithStatus = await Promise.all(nonExistingCancelledOrders.map(async order => {
-			const { history, shop } = await getInvoice(order.invoice_no);
-			return { history, shop, ...order };
-		}));
-
-		const newData = orderWithStatus.map(order => { //add a tag to the updated orders
-			if (!findExisting(order.invoice_no, existingData)) {
-				order.isUpdated = Date.now();
+		const newData = await Promise.all(newOrders.map(async order => {
+			const storageData = existingData.find(e => e.invoice_no === order.invoice_no);
+			if (storageData !== undefined) {
+				if (storageData.status !== order.status) {
+					order.isUpdated = Date.now();
+					const { history, shop } = await getInvoice(order.invoice_no);
+					return { history, shop, ...order };
+				} else {
+					return storageData;
+				}
 			}
 			return order;
-		});
+		}));
 		await storage.set({ orders: newData });
 	}
 	const storageData = await storage.get('orders').catch(() => false);
