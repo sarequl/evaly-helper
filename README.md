@@ -32,7 +32,7 @@
 
 ## Install Here
 
-[![install URL](https://developer.chrome.com/webstore/images/ChromeWebStore_BadgeWBorder_v2_206x58.png)](https://chrome.google.com/webstore/detail/evaly-cashback-calculator/kpleomdolbcdmcngkodgikkhkamjajjl)
+[![install URL](https://developer.chrome.com/webstore/images/ChromeWebStore_BadgeWBorder_v2_206x58.png)](https://chrome.google.com/webstore/detail/evaly-helper/ohaenmhffheomihbnbhffiehdgegegcg)
 
 ---
 

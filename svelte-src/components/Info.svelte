@@ -18,7 +18,7 @@
 </script>
 <div class="infoPaper">
     <Paper elevation={9} color={'primary'}>
-        <Title class="infoTitle">Total Active Orders: {$orders.length}</Title>
+        <Title class="countTitle">Total Active Orders: {$orders.length}</Title>
         <Content>
             <div>
                 <DataTable table$aria-label="Orders Count" class="countTable">
@@ -47,8 +47,8 @@
 .infoPaper{
     margin-bottom: 15px;
 }
-* :global(.infoTitle){
-    margin-bottom: 20px!important;
+* :global(.countTitle){
+    margin-bottom: 20px;
     text-align: center;
 } 
 * :global(.countTable){
