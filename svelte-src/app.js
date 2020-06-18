@@ -32,17 +32,12 @@ export async function main(reload) {
 		const { token } = await storage.get('token');
 		const account = new EvalyAccount(token);
 		const orders = await account.getOrders({ cancel: true, pending: false });
-		const orderWithStatus = await Promise.all(orders.map(async order => {
-			const { history, shop } = await getInvoice(order.invoice_no);
-			return { history, shop, ...order };
-		}));
 		const { orders: existingData } = await storage.get('orders');
 		const newOrders = [];
-		orderWithStatus.forEach(order => {
+		orders.forEach(order => {
 			if (!findExisting(order.invoice_no, existingData)) {
 				newOrders.push(order);
 			}
-
 		});
 		const currentData = [...newOrders, ...existingData]; //join new orders and current orders
 
@@ -55,7 +50,12 @@ export async function main(reload) {
 			return false;
 		});
 
-		const newData = nonExistingCancelledOrders.map(order => { //add a tag to the updated orders
+		const orderWithStatus = await Promise.all(nonExistingCancelledOrders.map(async order => {
+			const { history, shop } = await getInvoice(order.invoice_no);
+			return { history, shop, ...order };
+		}));
+
+		const newData = orderWithStatus.map(order => { //add a tag to the updated orders
 			if (!findExisting(order.invoice_no, existingData)) {
 				order.isUpdated = Date.now();
 			}
@@ -63,15 +63,13 @@ export async function main(reload) {
 		});
 		await storage.set({ orders: newData });
 	}
+	const storageData = await storage.get('orders').catch(() => false);
 
-	try {
-		const { orders: serverOrders } = await storage.get('orders').catch(e => {
-			console.log('probably first time.. fetching orders. \n', e);
-			main(true);
-		});
-		orders.set(serverOrders);
-	} catch (e) {
-		console.log(e);
+	if (storageData === false) {
+		orders.set([]);
+		main();
+	} else {
+		orders.set(storageData.orders);
 	}
 	spinner.set(false);
 }

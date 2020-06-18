@@ -104,13 +104,9 @@ async function main() {
 	const { token } = await storage.get('token');
 	const account = new EvalyAccount(token);
 	const orders = await account.getOrders({ cancel: true, pending: false });
-	const orderWithStatus = await Promise.all(orders.map(async order => {
-		const { history, shop } = await getInvoice(order.invoice_no);
-		return { history, shop, ...order };
-	}));
 	const { orders: existingData } = await storage.get('orders');
 	const newOrders = [];
-	orderWithStatus.forEach(order => {
+	orders.forEach(order => {
 		if (!findExisting(order.invoice_no, existingData)) {
 			newOrders.push(order);
 		}
@@ -126,7 +122,12 @@ async function main() {
 		return false;
 	});
 
-	const newData = nonExistingCancelledOrders.map(order => { //add a tag to the updated orders
+	const orderWithStatus = await Promise.all(nonExistingCancelledOrders.map(async order => {
+		const { history, shop } = await getInvoice(order.invoice_no);
+		return { history, shop, ...order };
+	}));
+
+	const newData = orderWithStatus.map(order => { //add a tag to the updated orders
 		if (!findExisting(order.invoice_no, existingData)) {
 			order.isUpdated = Date.now();
 		}
