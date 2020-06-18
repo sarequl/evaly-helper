@@ -3,16 +3,17 @@ import { onMount } from 'svelte';
 import { detailedView } from '../app';
 import SingleCard from './SingleCard.svelte';
 import InvoiceView from './InvoiceView.svelte';
+import Info from './Info.svelte';
 
 //state and functions
-import {main, orders} from '../app'
-onMount(main); //keep running until no error?
+import {main, orders} from '../app';
+onMount(main);
 </script>
 
 <div class="list">
     {#if $detailedView === 1}
         {#if $orders.length !== 0}
-            <!-- add order length, balance etc[todo] -->
+            <Info />
             {#each $orders as order}
                 <SingleCard orderDetails={order} />
             {/each}

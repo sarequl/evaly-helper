@@ -5,6 +5,7 @@
     export let text;
     export let first = true;
 </script>
+<div>
 
 <Button  
 on:click={clickHandler} 
@@ -17,3 +18,9 @@ class="button-shaped-round">
         <Label>{text}</Label><Icon class="material-icons">{icon}</Icon>
     {/if} 
 </Button>
+</div>
+<style>
+    * :global(.button-shaped-round){
+        border-radius: 20px;
+    }
+</style>

@@ -1,5 +1,4 @@
 <script>
-import './buttons.scss';
 import ActionButton from './ActionButton.svelte';
 import Fab, {Label, Icon} from '@smui/fab';
 import Paper, {Title, Content} from '@smui/paper';
@@ -10,13 +9,12 @@ import getInvoice from '../modules/invoice';
 import {onMount} from 'svelte';
 
 let invoiceData = false;
-$: note = '';
-$: status = '';
+let note = '';
+let status = '';
 onMount(async () => {
 	invoiceData = await getInvoice($detailedView)
 	note = invoiceData.history[0].note;
 	status = invoiceData.history[0].order_status;
-	console.log(invoiceData);
 	window.scrollTo(0, 0);
 	}
 );
