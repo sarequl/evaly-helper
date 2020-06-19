@@ -26,7 +26,7 @@ function changeHistory(id){
 }
 
 function goBack(){
-    detailedView.set(1);
+    detailedView.set(0);
 }
 
 let spinOn = () => spinner.set(true);

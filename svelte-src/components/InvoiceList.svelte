@@ -6,19 +6,20 @@ import InvoiceView from './InvoiceView.svelte';
 import Info from './Info.svelte';
 import storage from '../modules/storage';
 
-$: orders = [];
-export async function readOrders(){
+let orders = [];
+function readOrders(){
   storage.get('orders').then(data => orders = data.orders).catch(console.log);
 }
 chrome.storage.local.onChanged.addListener(readOrders);
 onMount(readOrders);
+let y = 0;
 </script>
 
 <div class="list">
-    {#if $detailedView === 1}
+    {#if $detailedView === 0}
         {#if orders.length !== 0 }
             <Info />
-            {#each orders as order}
+            {#each orders as order (order.invoice_no) }
                 <SingleCard orderDetails={order} />
             {/each}
         {:else}
@@ -26,7 +27,7 @@ onMount(readOrders);
             <h3>no data yet, Fetching your orders, please wait...</h3>
         {/if}
     {:else}
-        <svelte:component this={InvoiceView}></svelte:component>
+        <InvoiceView />
     {/if}
 </div>
 <style>

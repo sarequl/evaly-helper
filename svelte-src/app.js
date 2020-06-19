@@ -1,12 +1,13 @@
 import { writable } from 'svelte/store';
 import storage from './modules/storage';
-import getInvoice from './modules/invoice';
-import EvalyAccount from './modules/evalyAccount';
+// import getInvoice from './modules/invoice';
+// import EvalyAccount from './modules/evalyAccount';
 
 
 export const token = writable('none');
 export const spinner = writable(false);
-export const detailedView = writable(1);
+export const detailedView = writable(0);
+export const scrollPos = writable(0);
 
 //get Token and save to store and LocalStorage
 export default async function getToken() {
@@ -27,37 +28,41 @@ export default async function getToken() {
 //main function to get orders and save to localStorage
 export async function main() {
 	spinner.set(true);
-	const { token } = await storage.get('token');
-	const account = new EvalyAccount(token);
-	const serverOrders = await account.getOrders({ cancel: true, pending: false });
-	const { orders: existingData } = await storage.get('orders');
+	setTimeout(() => {
+		spinner.set(false);
+	}, 2000);
+	// const { token } = await storage.get('token');
+	// const account = new EvalyAccount(token);
+	// const serverOrders = await account.getOrders({ cancel: true, pending: false });
+	// const { orders: existingData } = await storage.get('orders');
 
-	const newOrders = serverOrders.filter(order => { //remove cancelled orders that does not exist in the current DB;
-		if (order.order_status === 'cancel') {
-			return findExisting(order.invoice_no, existingData);
-		} else if (order.order_status !== 'cancel') {
-			return true;
-		}
-		return false;
-	});
+	// const newOrders = serverOrders.filter(order => { //remove cancelled orders that does not exist in the current DB;
+	// 	if (order.order_status === 'cancel') {
+	// 		return findExisting(order.invoice_no, existingData);
+	// 	} else if (order.order_status !== 'cancel') {
+	// 		return true;
+	// 	}
+	// 	return false;
+	// });
 
-	const newData = await Promise.all(newOrders.map(async order => {
-		const storageData = existingData.find(e => e.invoice_no === order.invoice_no);
-		console.log(storageData);
-		if (storageData !== undefined) {
-			if (storageData.status !== order.status) {
-				order.isUpdated = Date.now();
-				const { history, shop } = await getInvoice(order.invoice_no);
-				return { history, shop, ...order };
-			} else {
-				return storageData;
-			}
-		}
-		return order;
-	}));
-	await storage.set({ orders: newData });
-	spinner.set(false);
-	return;
+	// 	const newData = await Promise.all(newOrders.map(async order => {
+	// 		const storageData = existingData.find(e => e.invoice_no === order.invoice_no);
+	// 		console.log(storageData);
+	// 		if (storageData !== undefined) {
+	// 			if (storageData.status !== order.status) {
+	// 				order.isUpdated = Date.now();
+	// 				const { history, shop } = await getInvoice(order.invoice_no);
+	// 				return { history, shop, ...order };
+	// 			} else {
+	// 				return storageData;
+	// 			}
+	// 		}
+	// 		const { history, shop } = await getInvoice(order.invoice_no);
+	// 		return { history, shop, ...order };
+	// 	}));
+	// 	// await storage.set({ orders: newData });
+	// 	// spinner.set(false);
+	// 	// return;
 }
 
 export function parseDate(date) {
@@ -69,8 +74,8 @@ export function parseDate(date) {
 	return `${dateStr} ${final}`;
 }
 
-function findExisting(id, array) { //returns false if the item does not exist
-	const data = array.find(el => el.invoice_no === id);
-	if (data === undefined) return false;
-	return true;
-}
+// function findExisting(id, array) { //returns false if the item does not exist
+// 	const data = array.find(el => el.invoice_no === id);
+// 	if (data === undefined) return false;
+// 	return true;
+// }

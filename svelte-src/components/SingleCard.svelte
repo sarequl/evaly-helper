@@ -1,7 +1,7 @@
 <script>
 import ActionButton from './ActionButton.svelte';
 import Paper, {Title, Content} from '@smui/paper';
-import {parseDate , detailedView } from '../app';
+import {parseDate , detailedView, scrollPos } from '../app';
 export let orderDetails;
 const { order_status, invoice_no, history , date, total, shop, isUpdated} = orderDetails;
 
@@ -17,7 +17,8 @@ function showUpdateBadge(){
 }
 
 function changeView(id){
-    detailedView.set(id)
+    detailedView.set(id);
+    scrollPos.set(window.scrollY);
 }
 </script>
 

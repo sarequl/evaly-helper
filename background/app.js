@@ -120,13 +120,15 @@ async function main() {
 		if (storageData !== undefined) {
 			if (storageData.status !== order.status) {
 				order.isUpdated = Date.now();
+				chrome.browserAction.setBadgeText({ text: 'NEW' });
 				const { history, shop } = await getInvoice(order.invoice_no);
 				return { history, shop, ...order };
 			} else {
 				return storageData;
 			}
 		}
-		return order;
+		const { history, shop } = await getInvoice(order.invoice_no);
+		return { history, shop, ...order };
 	}));
 	await storage.set({ orders: newData });
 }

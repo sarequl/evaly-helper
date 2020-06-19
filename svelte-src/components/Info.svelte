@@ -3,10 +3,12 @@
     import DataTable, {Head, Body, Row, Cell} from '@smui/data-table';
     import storage from '../modules/storage';
     import {onMount} from 'svelte';
+    import { scrollPos } from '../app';
 
     let processing,shipped,delivered,picked,cancel,total;
     
     async function filter(){
+        window.scrollTo(0,$scrollPos);
         const {orders} = await storage.get('orders');
         total = orders.length
         processing = orders.filter(order => order.order_status === 'processing').length;
