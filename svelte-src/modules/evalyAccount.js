@@ -13,12 +13,12 @@ export default class EvalyAccount {
 		}).then(res => res.json());
 
 		if (cancel === false && pending === true) {
-			const orders = res.results.filter(order => order.order_status === 'cancel');
+			const orders = res.results.filter(order => order.order_status !== 'cancel');
 			return orders;
 		}
 
 		if (cancel === true && pending === false) {
-			const orders = res.results.filter(order => order.order_status === 'pending');
+			const orders = res.results.filter(order => order.order_status !== 'pending');
 			return orders;
 		}
 
@@ -26,16 +26,4 @@ export default class EvalyAccount {
 		return orders;
 
 	}
-
-	// async init() {
-	// 	let token = await fetch('https://api.evaly.com.bd/auth/api/login/', {
-	// 		'headers': {
-	// 			'content-type': 'application/json;charset=UTF-8',
-	// 		},
-	// 		'body': JSON.stringify({ username: this.username, password: this.password }),
-	// 		'method': 'POST',
-	// 	}).then(res => res.ok ? res.json() : new Error('Username and Password Does not match'));
-	// 	this.token = token.access;
-	// }
-
 }

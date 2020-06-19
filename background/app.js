@@ -76,7 +76,7 @@ async function getInvoice(invoiceID) {
 		'headers': {
 			'authorization': 'Bearer ' + token,
 		},
-	}).then(res => res.json());
+	}).then(res => res.ok ? res.json() : new Error('request failed'));
 	const details = await fetch(`https://api.evaly.com.bd/core/custom/orders/${invoiceID}/`, {
 		'headers': {
 			'authorization': 'Bearer ' + token,
@@ -103,10 +103,10 @@ async function main() {
 
 	const { token } = await storage.get('token');
 	const account = new EvalyAccount(token);
-	const orders = await account.getOrders({ cancel: true, pending: false });
+	const serverOrders = await account.getOrders({ cancel: true, pending: false });
 	const { orders: existingData } = await storage.get('orders');
 
-	const newOrders = orders.filter(order => { //remove cancelled orders that does not exist in the current DB;
+	const newOrders = serverOrders.filter(order => { //remove cancelled orders that does not exist in the current DB;
 		if (order.order_status === 'cancel') {
 			return findExisting(order.invoice_no, existingData);
 		} else if (order.order_status !== 'cancel') {
@@ -132,13 +132,11 @@ async function main() {
 }
 
 function findExisting(id, array) { //returns false if the item does not exist
-	const filteredArr = array.filter(({ invoice_no }) => {
-		if (id === invoice_no) return true;
-		return false;
-	});
-	if (filteredArr.length === 0) return false;
+	const data = array.find(el => el.invoice_no === id);
+	if (data === undefined) return false;
 	return true;
 }
+
 
 
 chrome.runtime.onInstalled.addListener(() => {
@@ -148,3 +146,16 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 chrome.alarms.onAlarm.addListener(main);
+chrome.storage.local.onChanged.addListener(userListener);
+function userListener(change) {
+	if (Object.keys(change)[0] === 'token') {
+		storage.get('orders').then(({ orders }) => {
+			getInvoice(orders[0].invoice_no).then(res => {
+				if (res.detail === 'Not found.') {
+					console.log('user changed restting data');
+					firstData().then(() => console.log('done'));
+				}
+			}).catch(firstData);
+		}).catch(console.log);
+	}
+}

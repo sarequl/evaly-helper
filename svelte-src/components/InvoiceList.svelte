@@ -1,20 +1,24 @@
 <script>
-import { onMount } from 'svelte';
+import {onMount} from 'svelte';
 import { detailedView } from '../app';
 import SingleCard from './SingleCard.svelte';
 import InvoiceView from './InvoiceView.svelte';
 import Info from './Info.svelte';
+import storage from '../modules/storage';
 
-//state and functions
-import {main, orders} from '../app';
-onMount(main);
+$: orders = [];
+export async function readOrders(){
+  storage.get('orders').then(data => orders = data.orders).catch(console.log);
+}
+chrome.storage.local.onChanged.addListener(readOrders);
+onMount(readOrders);
 </script>
 
 <div class="list">
     {#if $detailedView === 1}
-        {#if $orders.length !== 0}
+        {#if orders.length !== 0 }
             <Info />
-            {#each $orders as order}
+            {#each orders as order}
                 <SingleCard orderDetails={order} />
             {/each}
         {:else}

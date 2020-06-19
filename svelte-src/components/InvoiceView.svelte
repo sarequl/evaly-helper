@@ -4,6 +4,7 @@ import Fab, {Label, Icon} from '@smui/fab';
 import Paper, {Title, Content} from '@smui/paper';
 import OrderStatusPaper from './OrderStatusPaper.svelte';
 import OrderItem from './OrderItem.svelte';
+import Shop from './Shop.svelte';
 import {token, spinner, detailedView } from '../app';
 import getInvoice from '../modules/invoice';
 import {onMount} from 'svelte';
@@ -60,7 +61,9 @@ let spinOff = () => spinner.set(false);
 				{/each}
 			</Content>
 			<Title class="secondaryTitle">Shop</Title>
-			<Content>Coming soon</Content>
+			<Content>
+				<Shop shopDetails={invoiceData.shop} />
+			</Content>
 		</Paper>
 		
 	</div>
