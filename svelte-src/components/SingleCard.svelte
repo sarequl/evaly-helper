@@ -19,6 +19,7 @@ function showUpdateBadge(){
 function changeView(id){
     detailedView.set(id);
     scrollPos.set(window.scrollY);
+    console.log(window.scrollY);
 }
 </script>
 

@@ -1,5 +1,5 @@
 <script>
-import { onMount } from 'svelte';
+import { onMount, afterUpdate } from 'svelte';
 import { detailedView, filterKeys, sortKey, scrollPos } from '../app';
 import storage from '../modules/storage';
 
@@ -66,17 +66,16 @@ filterKeys.subscribe(filter);
 sortKey.subscribe(sort);
 chrome.storage.local.onChanged.addListener(readOrders);
 
-onMount(async () => {
-	await readOrders()
+afterUpdate(() => {
 	setTimeout(() => {
 		window.scrollTo({
 			top: $scrollPos,
 			left: 0,
-			behavior: 'smooth'
 		});
-	}, 1);
-	
-});
+	}, 100);
+})
+
+onMount(readOrders);
 
 </script>
 
