@@ -9,6 +9,7 @@ import { getBalance, spinner, claimBalance } from '../app';
 
 let balance = 0;
 let claim = false;
+let pending = 0; 
 
 function checkBalance(){
 	getBalance()
@@ -32,12 +33,15 @@ export let clickHandler;
 			<Section>
 				<IconButton toggle on:click={() => clickHandler()} class="material-icons">menu</IconButton>
 				<!-- <IconButton toggle on:click={()=> mySnackbarB.open()} class="material-icons">menu</IconButton> -->
-				<Title>Evaly Helper</Title>
+				<Title class="appBarTitle">Evaly Helper</Title>
 			</Section>
 			<Section align="end" toolbar>
-				<span> Balance: ৳{balance}</span>
-				{#if !claim}
-					<ActionButton clickHandler={() => claimBalance(checkBalance)} icon={'done'} text={'Claim'} first={false} />
+				{#if balance !== 0}
+					{#if claim}
+						<ActionButton clickHandler={() => claimBalance(checkBalance)} icon={'done'} text={`Claim ৳${pending}`} first={false} />
+					{:else}
+						<span> Balance: ৳{balance}</span>
+					{/if}
 				{/if}
 				<ReloadButton />
 			</Section>
@@ -48,6 +52,9 @@ export let clickHandler;
 {/if}
 </div>
 <style>
+* :global(.appBarTitle){
+	padding-left: 5px;
+}
 .top-app-bar-container {
 	min-width: 100%;
 	top:0;
@@ -55,7 +62,10 @@ export let clickHandler;
 	z-index: 100;
 }
 span{
-	font-size: 14px;
+	font-size: 1.25rem;
+	letter-spacing: .0125em;
+	text-decoration: inherit;
+	text-transform: inherit;
 	margin-right: 15px;
 }
 </style>

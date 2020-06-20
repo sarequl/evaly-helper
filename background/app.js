@@ -68,6 +68,30 @@ class EvalyAccount {
 		return orders;
 
 	}
+
+	async getBalance() {
+		const { username } = await storage.get('username');
+		const res = await fetch(`https://api.evaly.com.bd/auth/user-info-pay/${username}/`, {
+			'headers': {
+				'authorization': `Bearer ${this.token}`,
+			},
+			'referrer': 'https://evaly.com.bd/',
+			'method': 'GET'
+		}).then(res => res.json());
+		return res.data;
+	}
+
+	async claimCashback() {
+		const { username } = await storage.get('username');
+		const res = await fetch(`https://api.evaly.com.bd/auth/user-info-pay/${username}/`, {
+			'headers': {
+				'authorization': `Bearer ${this.token}`,
+			},
+			'referrer': 'https://evaly.com.bd/',
+			'method': 'GET'
+		}).then(res => res.json());
+		return res.message;
+	}
 }
 
 async function getInvoice(invoiceID) {
@@ -121,7 +145,12 @@ async function main() {
 		if (storageData !== undefined) {
 			if (storageData.status !== order.status) {
 				order.isUpdated = Date.now();
-				chrome.browserAction.setBadgeText({ text: 'NEW' });
+				chrome.notifications.create(null, {
+					type: 'basic',
+					title: 'Order Update',
+					message: `order ${order.invoice_no} was marked as '${order.status}', open extension to see details`,
+					iconUrl: 'icons/icon128.png'
+				});
 				const { history, shop } = await getInvoice(order.invoice_no);
 				return { history, shop, ...order };
 			} else {
@@ -132,6 +161,15 @@ async function main() {
 		return { history, shop, ...order };
 	}));
 	await storage.set({ orders: newData });
+	const balance = await account.getBalance();
+	if (balance.cashback_balance !== 0) {
+		chrome.notifications.create(null, {
+			type: 'basic',
+			title: 'Cashback update',
+			message: `৳${balance.cashback_balance} cashback can be claimed, open extension to claim it`,
+			iconUrl: 'icons/icon128.png'
+		});
+	}
 }
 
 function findExisting(id, array) { //returns false if the item does not exist

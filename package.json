@@ -5,9 +5,9 @@
 	"main": "svelte-src/app.js",
 	"repository": "https://github.com/shahriar-shojib/evaly-helper.git",
 	"scripts": {
-		"build": "rollup -c rollup.config.js",
+		"build": "rollup -c build-prod.js",
 		"serve": "serve ./popup",
-		"watch": "rollup -c rollup.config.js --watch",
+		"watch": "rollup -c build-dev.js --watch",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"author": "Shahriar Shojib <shahriar_shojib@hotmail.com>",
@@ -26,6 +26,5 @@
 		"serve": "^11.3.2",
 		"svelte": "^3.23.2",
 		"svelte-material-ui": "^1.0.0-beta.21"
-	},
-	"dependencies": {}
+	}
 }

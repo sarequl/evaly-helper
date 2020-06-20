@@ -4,7 +4,14 @@
 	"manifest_version": 2,
 	"description": "Evaly helper",
 	"homepage_url": "https://github.com/shahriar-shojib/evaly-helper",
-	"permissions": ["alarms", "storage", "cookies", "https://evaly.com.bd/"],
+
+	"permissions": [
+		"notifications",
+		"alarms",
+		"storage",
+		"cookies",
+		"https://evaly.com.bd/"
+	],
 
 	"icons": {
 		"16": "icons/icon16.png",
