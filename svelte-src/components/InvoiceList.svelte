@@ -13,43 +13,53 @@ let orders2 = [];
 let y = 0;
 
 function filter(values) {
-	let filteredArr = []
-	for (let i = 0; i < values.length; i++) {
-		let newArr = orders.filter(order => order.order_status === values[i]);
-		for(let j = 0; j < newArr.length; j++){
-			filteredArr.push(newArr[j]);
+	try {
+		let filteredArr = []
+		for (let i = 0; i < values.length; i++) {
+			let newArr = orders.filter(order => order.order_status === values[i]);
+			for(let j = 0; j < newArr.length; j++){
+				filteredArr.push(newArr[j]);
+			}
 		}
+		orders2 = [...filteredArr];
+		sort($sortKey);
+	} catch (error) {
+		console.log(error);
 	}
-	orders2 = [...filteredArr];
-	sort($sortKey);
 }
 
 function sort(order){
-	console.log(order);
-	switch (order) {
-		case 'dateNew':
-			orders2 = orders2.sort((a,b) => new Date(b.date) - new Date(a.date));
-			break;
-		case 'dateOld':
-			orders2 = orders2.sort((a,b) => new Date(a.date) - new Date(b.date));
-			break;
-		case 'priceHigh':
-			orders2 = orders2.sort((a,b) => parseInt(b.total) - parseInt(a.total));
-			break;
-		case 'priceLow':
-			orders2 = orders2.sort((a,b) => parseInt(a.total) - parseInt(b.total));
-			break;
-		default:
-			orders2 = orders2.sort((a,b) => new Date(b.date) - new Date(a.date));
-			break;
+	try {
+		switch (order) {
+			case 'dateNew':
+				orders2 = orders2.sort((a,b) => new Date(b.date) - new Date(a.date));
+				break;
+			case 'dateOld':
+				orders2 = orders2.sort((a,b) => new Date(a.date) - new Date(b.date));
+				break;
+			case 'priceHigh':
+				orders2 = orders2.sort((a,b) => parseInt(b.total) - parseInt(a.total));
+				break;
+			case 'priceLow':
+				orders2 = orders2.sort((a,b) => parseInt(a.total) - parseInt(b.total));
+				break;
+			default:
+				orders2 = orders2.sort((a,b) => new Date(b.date) - new Date(a.date));
+				break;
+		}
+	} catch (error) {
+		console.log(error);
 	}
-	console.log(orders2);
 }
 
 async function readOrders() {
-	let data = await storage.get('orders').catch(console.log);
-	orders = data.orders;
-	orders2 = data.orders;
+	try {
+		let data = await storage.get('orders').catch(console.log);
+		orders = data.orders;
+		orders2 = data.orders;
+	} catch (error) {
+		console.log(error);
+	}
 }
 
 filterKeys.subscribe(filter);

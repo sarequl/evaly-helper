@@ -17,7 +17,7 @@ let date;
 
 onMount(async () => {
 	spinner.set(true)
-	invoiceData = await getInvoice($detailedView)
+	invoiceData = await getInvoice($detailedView).catch(console.log)
 	note = invoiceData.history[0].note;
 	status = invoiceData.history[0].order_status;
 	date = invoiceData.history[0].date;

@@ -13,8 +13,12 @@ import Info from './Info.svelte';
 
 let total = 0;
 onMount(async () => {
-	const { orders } = await storage.get('orders');
-	total = orders.length;
+	try {
+		const { orders } = await storage.get('orders').catch(console.log);
+		total = orders.length;
+	} catch (error) {
+		console.log(error);
+	}
 });
 
 function setSortKey(value) {
