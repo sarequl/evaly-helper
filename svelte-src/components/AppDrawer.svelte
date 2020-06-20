@@ -1,6 +1,6 @@
 <script>
 import { onMount } from 'svelte';
-import { sortKey, isDrawerOpen } from '../app';
+import { sortKey, isDrawerOpen, scrollPos } from '../app';
 import storage from '../modules/storage';
 
 import Drawer, { AppContent, Content, Header, Title, Subtitle, Scrim } from '@smui/drawer';
@@ -24,6 +24,7 @@ onMount(async () => {
 function setSortKey(value) {
 	sortKey.set(value)
 	$isDrawerOpen = false;
+	$scrollPos = 0;
 }
 </script>
 

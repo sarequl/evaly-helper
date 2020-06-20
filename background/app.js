@@ -143,12 +143,12 @@ async function main() {
 	const newData = await Promise.all(newOrders.map(async order => {
 		const storageData = existingData.find(e => e.invoice_no === order.invoice_no);
 		if (storageData !== undefined) {
-			if (storageData.status !== order.status) {
+			if (storageData.order_status !== order.order_status) {
 				order.isUpdated = Date.now();
 				chrome.notifications.create(null, {
 					type: 'basic',
 					title: 'Order Update',
-					message: `order ${order.invoice_no} was marked as '${order.status}', open extension to see details`,
+					message: `order ${order.invoice_no} was marked as '${order.order_status}', open extension to see details`,
 					iconUrl: 'icons/icon128.png'
 				});
 				const { history, shop } = await getInvoice(order.invoice_no);

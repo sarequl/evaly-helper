@@ -2,7 +2,6 @@ import { writable } from 'svelte/store';
 import storage from './modules/storage';
 import EvalyAccount from './modules/evalyAccount';
 // import getInvoice from './modules/invoice';
-// import EvalyAccount from './modules/evalyAccount';
 
 
 export const token = writable('none');
@@ -53,6 +52,7 @@ export function calcDays(strDate) {
 	if (days < 2) return `${days} day ago`;
 	return `${days} days ago`;
 }
+
 export async function getBalance() {
 	const { token } = await storage.get('token').catch(console.log);
 	const account = new EvalyAccount(token);
