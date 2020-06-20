@@ -1,3 +1,4 @@
+import storage from './storage';
 export default class EvalyAccount {
 	constructor(token) {
 		this.token = token;
@@ -25,5 +26,27 @@ export default class EvalyAccount {
 		const orders = res.results.filter(order => !(order.order_status === 'cancel' || order.order_status === 'pending'));
 		return orders;
 
+	}
+	async getBalance() {
+		const { username } = await storage.get('username');
+		const res = await fetch(`https://api.evaly.com.bd/auth/user-info-pay/${username}/`, {
+			'headers': {
+				'authorization': `Bearer ${this.token}`,
+			},
+			'referrer': 'https://evaly.com.bd/',
+			'method': 'GET'
+		}).then(res => res.json());
+		return res.data;
+	}
+	async claimCashback() {
+		const { username } = await storage.get('username');
+		const res = await fetch(`https://api.evaly.com.bd/auth/user-info-pay/${username}/`, {
+			'headers': {
+				'authorization': `Bearer ${this.token}`,
+			},
+			'referrer': 'https://evaly.com.bd/',
+			'method': 'GET'
+		}).then(res => res.json());
+		return res.message;
 	}
 }

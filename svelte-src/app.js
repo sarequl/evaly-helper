@@ -1,5 +1,6 @@
 import { writable } from 'svelte/store';
 import storage from './modules/storage';
+import EvalyAccount from './modules/evalyAccount';
 // import getInvoice from './modules/invoice';
 // import EvalyAccount from './modules/evalyAccount';
 
@@ -31,38 +32,6 @@ export async function main() {
 	setTimeout(() => {
 		spinner.set(false);
 	}, 2000);
-	// const { token } = await storage.get('token');
-	// const account = new EvalyAccount(token);
-	// const serverOrders = await account.getOrders({ cancel: true, pending: false });
-	// const { orders: existingData } = await storage.get('orders');
-
-	// const newOrders = serverOrders.filter(order => { //remove cancelled orders that does not exist in the current DB;
-	// 	if (order.order_status === 'cancel') {
-	// 		return findExisting(order.invoice_no, existingData);
-	// 	} else if (order.order_status !== 'cancel') {
-	// 		return true;
-	// 	}
-	// 	return false;
-	// });
-
-	// 	const newData = await Promise.all(newOrders.map(async order => {
-	// 		const storageData = existingData.find(e => e.invoice_no === order.invoice_no);
-	// 		console.log(storageData);
-	// 		if (storageData !== undefined) {
-	// 			if (storageData.status !== order.status) {
-	// 				order.isUpdated = Date.now();
-	// 				const { history, shop } = await getInvoice(order.invoice_no);
-	// 				return { history, shop, ...order };
-	// 			} else {
-	// 				return storageData;
-	// 			}
-	// 		}
-	// 		const { history, shop } = await getInvoice(order.invoice_no);
-	// 		return { history, shop, ...order };
-	// 	}));
-	// 	// await storage.set({ orders: newData });
-	// 	// spinner.set(false);
-	// 	// return;
 }
 
 export function parseDate(date) {
@@ -74,8 +43,21 @@ export function parseDate(date) {
 	return `${dateStr} ${final}`;
 }
 
-// function findExisting(id, array) { //returns false if the item does not exist
-// 	const data = array.find(el => el.invoice_no === id);
-// 	if (data === undefined) return false;
-// 	return true;
-// }
+export function calcDays(strDate) {
+	const currentDate = Date.now();
+	const time = currentDate - new Date(strDate);
+	const days = Math.round((((time / 1000) / 60) / 60) / 24);
+	if (days < 2) return `${days} day ago`;
+	return `${days} days ago`;
+}
+export async function getBalance() {
+	const { token } = await storage.get('token');
+	const account = new EvalyAccount(token);
+	return await account.getBalance();
+}
+export async function claimBalance(callBack) {
+	const { token } = await storage.get('token');
+	const account = new EvalyAccount(token);
+	await account.claimCashback();
+	callBack();
+}

@@ -95,6 +95,7 @@ async function firstData() {
 			return { history, shop, ...order };
 		}));
 		await storage.set({ orders: orderWithStatus });
+		await storage.set({ username: orderWithStatus[0].customer.username });
 	}
 }
 
@@ -154,7 +155,7 @@ function userListener(change) {
 		storage.get('orders').then(({ orders }) => {
 			getInvoice(orders[0].invoice_no).then(res => {
 				if (res.detail === 'Not found.') {
-					console.log('user changed restting data');
+					console.log('user changed resetting data');
 					firstData().then(() => console.log('done'));
 				}
 			}).catch(firstData);

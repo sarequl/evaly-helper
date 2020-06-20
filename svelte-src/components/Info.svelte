@@ -1,24 +1,30 @@
 <script>
-    import Paper,{Title,Content} from '@smui/paper';
-    import DataTable, {Head, Body, Row, Cell} from '@smui/data-table';
-    import storage from '../modules/storage';
-    import {onMount} from 'svelte';
-    import { scrollPos } from '../app';
+import Paper,{Title,Content} from '@smui/paper';
+import DataTable, {Head, Body, Row, Cell} from '@smui/data-table';
+import storage from '../modules/storage';
+import {onMount} from 'svelte';
+import { scrollPos } from '../app';
 
-    let processing,shipped,delivered,picked,cancel,total;
-    
-    async function filter(){
-        window.scrollTo(0,$scrollPos);
-        const {orders} = await storage.get('orders');
-        total = orders.length
-        processing = orders.filter(order => order.order_status === 'processing').length;
-        shipped = orders.filter(order => order.order_status === 'shipped').length;
-        delivered = orders.filter(order => order.order_status === 'delivered').length;
-        picked = orders.filter(order => order.order_status === 'picked').length;
-        cancel = orders.filter(order => order.order_status === 'cancel').length;
-    }
-    onMount(filter)
-    chrome.storage.local.onChanged.addListener(filter);
+let processing,shipped,delivered,picked,cancel,total;
+
+async function filter(){
+	const {orders} = await storage.get('orders');
+	total = orders.length
+	processing = orders.filter(order => order.order_status === 'processing').length;
+	shipped = orders.filter(order => order.order_status === 'shipped').length;
+	delivered = orders.filter(order => order.order_status === 'delivered').length;
+	picked = orders.filter(order => order.order_status === 'picked').length;
+	cancel = orders.filter(order => order.order_status === 'cancel').length;
+	setTimeout(() => {
+		window.scrollTo({
+			top: $scrollPos,
+			left: 0,
+			behavior: 'smooth'
+		});
+	}, 1);
+}
+onMount(filter)
+chrome.storage.local.onChanged.addListener(filter);
 </script>
 {#if processing !== undefined}
     <div class="infoPaper">

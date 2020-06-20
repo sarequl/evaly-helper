@@ -41,9 +41,11 @@
 	margin-bottom: 12px;
 }
 .productImage{
-    max-width: 100px;
-    margin-right: 15px;
-    cursor: pointer;
+    min-width: 100px;
+	max-height: 100px;
+	margin-right: 15px;
+	cursor: pointer;
+	object-fit: scale-down;
 }
 .productTitle{
     font-weight: 600;

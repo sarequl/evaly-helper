@@ -1,7 +1,7 @@
 <script>
 import ActionButton from './ActionButton.svelte';
 import Paper, {Title, Content} from '@smui/paper';
-import {parseDate , detailedView, scrollPos } from '../app';
+import {parseDate , calcDays , detailedView, scrollPos } from '../app';
 export let orderDetails;
 const { order_status, invoice_no, history , date, total, shop, isUpdated} = orderDetails;
 
@@ -44,6 +44,7 @@ function changeView(id){
                     <Content>
                         <p>{shop.name}</p>
                         <p>{parseDate(date)}</p>
+                        <p>Ordered {calcDays(date)}</p>
                         <ActionButton clickHandler={() => changeView(invoice_no)} icon={'arrow_forward'} text={'Go To Details'} first={false} />
                     </Content>
                 </Paper>

@@ -24,14 +24,14 @@ let mySnackbar;
 {#if loggedIn}
     <!-- <AppBar clickHandler={() => isOpen = !isOpen}/> -->
     <AppBar clickHandler={() => mySnackbar.open()}/>
+    <Snackbar bind:this={mySnackbar}>
+        <Label>coming soon</Label>
+        <Actions>
+            <IconButton class="material-icons" title="Dismiss">close</IconButton>
+        </Actions>
+    </Snackbar>
     <AppDrawer state={isOpen}>
         <InvoiceList />
-        <Snackbar bind:this={mySnackbar}>
-            <Label>coming soon</Label>
-            <Actions>
-                <IconButton class="material-icons" title="Dismiss">close</IconButton>
-            </Actions>
-        </Snackbar>
     </AppDrawer>
 {:else}
     <LoginCard />

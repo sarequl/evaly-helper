@@ -46,6 +46,7 @@
     max-width: 100px;
     margin-right: 15px;
     cursor: pointer;
+    object-fit: contain;
 }
 .shopTitle{
     font-weight: 600;

@@ -10,18 +10,24 @@ import getInvoice from '../modules/invoice';
 import {onMount} from 'svelte';
 
 let invoiceData = false;
-let note = '';
-let status = '';
+let note;
+let status;
+let date;
+
 onMount(async () => {
+	spinner.set(true)
 	invoiceData = await getInvoice($detailedView)
 	note = invoiceData.history[0].note;
 	status = invoiceData.history[0].order_status;
+	date = invoiceData.history[0].date;
 	window.scrollTo(0, 0);
+	spinner.set(false)
 	}
 );
 
 function changeHistory(id){
 	note = invoiceData.history[id].note;
+	date = invoiceData.history[id].date;
 	status = invoiceData.history[id].order_status;
 }
 
@@ -29,15 +35,11 @@ function goBack(){
     detailedView.set(0);
 }
 
-let spinOn = () => spinner.set(true);
-let spinOff = () => spinner.set(false);
-
 </script>
 
 {#if !invoiceData}
-	<aside>{spinOn()}</aside>
+	<h2 style="margin-top:60px;">Loading...</h2>
 {:else}
-	<aside>{spinOff()}</aside>
 	<div class="paper-container">
 		<Paper elevation={9} color={'primary'} >
 			<ActionButton clickHandler={goBack} icon={'arrow_back'} text={'Go Back'} />
@@ -51,7 +53,7 @@ let spinOff = () => spinner.set(false);
 						<Fab color="primary" class="fabMargin" on:click={() => changeHistory(1)} ><Icon class="material-icons">check_circle</Icon></Fab>
 						<Fab color="primary" on:click={() => changeHistory(2)}><Icon class="material-icons" >check_circle</Icon></Fab>
 					</div>
-					<OrderStatusPaper note={note} status={status} />
+					<OrderStatusPaper {date} {status} {note} />
 				</Paper>
 			</Content>
 			<Title class="secondaryTitle">Items</Title>
@@ -79,10 +81,6 @@ let spinOff = () => spinner.set(false);
 	* :global(.secondaryTitle){
 		margin-top: 15px;
 		margin-bottom: 15px;
-	}
-
-	aside{
-		display: none;
 	}
 
 	* :global(.progressPaper){
