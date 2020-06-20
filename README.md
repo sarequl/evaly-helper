@@ -66,15 +66,15 @@
 
 ## Public Feature Roadmap
 
-- Show a notification badge if there is a new order or if any existing order has been updated [in progress]
+- Show a notification badge if there is a new order or if any existing order has been updated [done]
 
-* Allow user to filter order by their status (shipped/processing etc) [todo]
+* Allow user to filter order by their status (shipped/processing etc) [done]
 
-- Show user profile and balance [todo]
+- Show user profile and balance [added balance]
 
 * Offer customization/preferences for various extension behaviour to the user [todo]
 
-- Allow sorting orders by date/price [todo]
+- Allow sorting orders by date/price [done]
 
 ## **Feel free to open an issue if you are looking for a specific feature that is not on this checklist and not implemented yet**
 
