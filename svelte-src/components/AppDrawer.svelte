@@ -98,7 +98,7 @@
   }
 
   .main-content {
-    padding: 16px;
+    padding: 10px;
     height: auto;
     box-sizing: border-box;
     z-index: 1;

@@ -1,6 +1,6 @@
 <script>
 import IconButton from '@smui/icon-button';
-import {spinner} from '../app';
+import { spinner } from '../app';
 
 function test(){
     spinner.set(true)

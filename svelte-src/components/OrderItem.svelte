@@ -1,10 +1,12 @@
 <script>
-    import Paper, { Title, Content} from '@smui/paper';
-    export let item;
-    let { item_images, item_name, order_time_price, product_slug, quantity } = item;
-    function openURL(){
-        window.open('https://evaly.com.bd/products/' + product_slug, '_blank');
-    }
+import Paper, { Title, Content } from '@smui/paper';
+
+export let item;
+let { item_images, item_name, order_time_price, product_slug, quantity } = item;
+
+function openURL(){
+    window.open('https://evaly.com.bd/products/' + product_slug, '_blank');
+}
 </script>
 
 <div class="orderedItems">

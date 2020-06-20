@@ -1,13 +1,16 @@
 <script>
-    import Paper, { Title, Content} from '@smui/paper';
-    export let shopDetails;
-    let {logo_image,name,slug,contact_number,address} = shopDetails;
-    function openURL(){
-        window.open('https://evaly.com.bd/shops/' + slug, '_blank');
-    }
-    if(contact_number == null || contact_number === '0') contact_number = false
-</script>
+import Paper, { Title, Content } from '@smui/paper';
 
+export let shopDetails;
+let { logo_image, name, slug, contact_number , address } = shopDetails;
+
+function openURL(){
+    window.open('https://evaly.com.bd/shops/' + slug, '_blank');
+}
+
+if(contact_number == null || contact_number === '0') contact_number = false
+
+</script>
 <div class="shopPaperContainer">
     <Paper elevation={9} class="shopPaper">
         <Content>

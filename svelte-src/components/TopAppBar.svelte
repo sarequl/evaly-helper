@@ -1,5 +1,5 @@
 <script> 
-import {onMount} from 'svelte';
+import { onMount } from 'svelte';
 import TopAppBar, { Row, Section, Title } from '@smui/top-app-bar';
 import IconButton from '@smui/icon-button';
 import LinearProgress from '@smui/linear-progress';

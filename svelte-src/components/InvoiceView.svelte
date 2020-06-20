@@ -1,13 +1,14 @@
 <script>
+import { onMount } from 'svelte';
+import { token, spinner, detailedView } from '../app';
+import getInvoice from '../modules/invoice';
+import Fab, { Label, Icon } from '@smui/fab';
+import Paper, { Title, Content } from '@smui/paper';
+
 import ActionButton from './ActionButton.svelte';
-import Fab, {Label, Icon} from '@smui/fab';
-import Paper, {Title, Content} from '@smui/paper';
 import OrderStatusPaper from './OrderStatusPaper.svelte';
 import OrderItem from './OrderItem.svelte';
 import Shop from './Shop.svelte';
-import {token, spinner, detailedView } from '../app';
-import getInvoice from '../modules/invoice';
-import {onMount} from 'svelte';
 
 let invoiceData = false;
 let note;

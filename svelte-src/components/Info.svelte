@@ -1,13 +1,16 @@
 <script>
-import Paper,{Title,Content} from '@smui/paper';
-import DataTable, {Head, Body, Row, Cell} from '@smui/data-table';
+import { onMount } from 'svelte';
+import { scrollPos, filterKeys } from '../app';
 import storage from '../modules/storage';
-import {onMount} from 'svelte';
-import { scrollPos } from '../app';
+
+import Paper,{ Title,Content } from '@smui/paper';
+import DataTable, { Head, Body, Row, Cell } from '@smui/data-table';
+
+onMount(count);
 
 let processing,shipped,delivered,picked,cancel,total;
 
-async function filter(){
+async function count(){
 	const {orders} = await storage.get('orders');
 	total = orders.length
 	processing = orders.filter(order => order.order_status === 'processing').length;
@@ -23,9 +26,10 @@ async function filter(){
 		});
 	}, 1);
 }
-onMount(filter)
-chrome.storage.local.onChanged.addListener(filter);
+chrome.storage.local.onChanged.addListener(count);
 </script>
+
+
 {#if processing !== undefined}
     <div class="infoPaper">
         <Paper elevation={9} color={'primary'}>
