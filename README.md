@@ -4,21 +4,21 @@
 
 **_Extension in action_**
 
-> **displaying discount information**
-
-![Extension in action](https://i.imgur.com/OXKj2a0.png)
-
 > **invoice list**
 
-![invoice list page](https://i.imgur.com/JwKDEUI.png)
+![invoice list page](https://i.imgur.com/698siC6.jpg)
 
 > **Order Status**
 
-![order status](https://i.imgur.com/BCOgT3P.png)
+![order status](https://i.imgur.com/5gOA9ek.jpg)
 
-> **Ordered Items**
+> **sidebar**
 
-![ordered items](https://i.imgur.com/qPecWrS.png)
+![sidebar](https://i.imgur.com/CxgHuzM.jpg)
+
+> **displaying discount information**
+
+![Extension in action](https://i.imgur.com/OXKj2a0.png)
 
 - On cashback campaign products page it will display various cashback/discount information relative to the product so you don't have to do the calculations (math is hard 😑)
 
