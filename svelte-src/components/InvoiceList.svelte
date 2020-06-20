@@ -1,6 +1,6 @@
 <script>
 import { onMount } from 'svelte';
-import { detailedView, filterKeys } from '../app';
+import { detailedView, filterKeys, sortKey, scrollPos } from '../app';
 import storage from '../modules/storage';
 
 import FilterComponent from './FilterComponent.svelte';
@@ -8,39 +8,71 @@ import SingleCard from './SingleCard.svelte';
 import InvoiceView from './InvoiceView.svelte';
 import Info from './Info.svelte';
 
-onMount(readOrders);
-
 let orders = [];
 let orders2 = [];
-
 let y = 0;
 
 function filter(values) {
 	let filteredArr = []
-	console.log(values);
-	values.forEach(key => {
-		let arr = orders.filter(order => order.order_status === key).forEach(e => filteredArr.push(e))
-	});
-	console.log(filteredArr);
+	for (let i = 0; i < values.length; i++) {
+		let newArr = orders.filter(order => order.order_status === values[i]);
+		for(let j = 0; j < newArr.length; j++){
+			filteredArr.push(newArr[j]);
+		}
+	}
 	orders2 = [...filteredArr];
+	sort($sortKey);
 }
 
-filterKeys.subscribe(filter)
+function sort(order){
+	console.log(order);
+	switch (order) {
+		case 'dateNew':
+			orders2 = orders2.sort((a,b) => new Date(b.date) - new Date(a.date));
+			break;
+		case 'dateOld':
+			orders2 = orders2.sort((a,b) => new Date(a.date) - new Date(b.date));
+			break;
+		case 'priceHigh':
+			orders2 = orders2.sort((a,b) => parseInt(b.total) - parseInt(a.total));
+			break;
+		case 'priceLow':
+			orders2 = orders2.sort((a,b) => parseInt(a.total) - parseInt(b.total));
+			break;
+		default:
+			orders2 = orders2.sort((a,b) => new Date(b.date) - new Date(a.date));
+			break;
+	}
+	console.log(orders2);
+}
 
 async function readOrders() {
 	let data = await storage.get('orders').catch(console.log);
 	orders = data.orders;
 	orders2 = data.orders;
 }
+
+filterKeys.subscribe(filter);
+sortKey.subscribe(sort);
 chrome.storage.local.onChanged.addListener(readOrders);
+
+onMount(async () => {
+	await readOrders()
+	setTimeout(() => {
+		window.scrollTo({
+			top: $scrollPos,
+			left: 0,
+			behavior: 'smooth'
+		});
+	}, 1);
+	
+});
 
 </script>
 
 <div class="list">
-	<FilterComponent />
 	{#if $detailedView === 0}
         {#if orders2.length !== 0 }
-            <Info />
             {#each orders2 as order (order.invoice_no) }
                 <SingleCard orderDetails={order} />
             {/each}

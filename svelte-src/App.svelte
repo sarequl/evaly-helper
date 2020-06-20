@@ -10,27 +10,18 @@ import IconButton from '@smui/icon-button';
 //state and functions
 import storage from './modules/storage';
 import { onMount } from 'svelte';
-import getToken from './app';
+import getToken, { isDrawerOpen } from './app';
 
 //logic
 let loggedIn = false;
 onMount(() => getToken().then(isLoggedIn => loggedIn = isLoggedIn));
-let isOpen = false;
-let mySnackbar;
 
 </script>
 
 <!-- load components -->
 {#if loggedIn}
-    <!-- <AppBar clickHandler={() => isOpen = !isOpen}/> -->
-    <AppBar clickHandler={() => mySnackbar.open()}/>
-    <Snackbar bind:this={mySnackbar}>
-        <Label>coming soon</Label>
-        <Actions>
-            <IconButton class="material-icons" title="Dismiss">close</IconButton>
-        </Actions>
-    </Snackbar>
-    <AppDrawer state={isOpen}>
+    <AppBar clickHandler={() => $isDrawerOpen = !$isDrawerOpen }/>
+    <AppDrawer>
         <InvoiceList />
     </AppDrawer>
 {:else}

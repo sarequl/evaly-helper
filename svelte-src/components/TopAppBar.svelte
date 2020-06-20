@@ -20,7 +20,6 @@ function checkBalance(){
 			}
 		})
 		.catch(console.log);
-	console.log('trigerred');
 }
 onMount(checkBalance);
 chrome.storage.local.onChanged.addListener(checkBalance);
@@ -32,7 +31,6 @@ export let clickHandler;
 		<Row>
 			<Section>
 				<IconButton toggle on:click={() => clickHandler()} class="material-icons">menu</IconButton>
-				<!-- <IconButton toggle on:click={()=> mySnackbarB.open()} class="material-icons">menu</IconButton> -->
 				<Title class="appBarTitle">Evaly Helper</Title>
 			</Section>
 			<Section align="end" toolbar>

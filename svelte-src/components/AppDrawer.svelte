@@ -1,64 +1,69 @@
 <script>
-  import Drawer, {AppContent, Content, Header, Title, Subtitle, Scrim} from '@smui/drawer';
-  import Button, {Label} from '@smui/button';
-  import List, {Item, Text, Graphic, Separator, Subheader} from '@smui/list';
-  import H6 from '@smui/common/H6.svelte';
+import { onMount } from 'svelte';
+import { sortKey, isDrawerOpen } from '../app';
+import storage from '../modules/storage';
 
-  let clicked = 'nothing yet';
-  let myDrawer2;
-  export let state = false;
-  let active2 = 'Inbox';
-  function setActive2(value) {
-    active2 = value;
-    state = false;
-  }
+import Drawer, { AppContent, Content, Header, Title, Subtitle, Scrim } from '@smui/drawer';
+import Button, { Label } from '@smui/button';
+import List, { Item, Text, Graphic, Separator, Subheader } from '@smui/list';
+import H6 from '@smui/common/H6.svelte';
 
+import FilterComponent from './FilterComponent.svelte';
+import Info from './Info.svelte';
+
+let total = 0;
+onMount(async () => {
+	const { orders } = await storage.get('orders');
+	total = orders.length;
+});
+
+function setSortKey(value) {
+	sortKey.set(value)
+	$isDrawerOpen = false;
+}
 </script>
 
 <section>
     <div class="drawer-container">
-      <Drawer variant="modal" bind:this={myDrawer2} bind:open={state}>
-        <Header>
-          <Title>Super Mail</Title>
-          <Subtitle>It's the best fake mail app drawer.</Subtitle>
-        </Header>
-        <Content>
-          <List>
-            <Item href="javascript:void(0)" on:click={() => setActive2('Inbox')} activated={active2 === 'Inbox'}>
-              <Graphic class="material-icons" aria-hidden="true">inbox</Graphic>
-              <Text>Inbox</Text>
-            </Item>
-            <Item href="javascript:void(0)" on:click={() => setActive2('Star')} activated={active2 === 'Star'}>
-              <Graphic class="material-icons" aria-hidden="true">star</Graphic>
-              <Text>Star</Text>
-            </Item>
-            <Item href="javascript:void(0)" on:click={() => setActive2('Sent Mail')} activated={active2 === 'Sent Mail'}>
-              <Graphic class="material-icons" aria-hidden="true">send</Graphic>
-              <Text>Sent Mail</Text>
-            </Item>
-            <Item href="javascript:void(0)" on:click={() => setActive2('Drafts')} activated={active2 === 'Drafts'}>
-              <Graphic class="material-icons" aria-hidden="true">drafts</Graphic>
-              <Text>Drafts</Text>
-            </Item>
+		<Drawer variant="modal" bind:open={$isDrawerOpen}>
+		<Header>
+			<Title>{total} Active orders</Title>
+			<Subtitle>
+			<Info />
+			</Subtitle>
+			
+		</Header>
+		<Content>
+			<List>
+				<Separator nav />
 
-            <Separator nav />
-            <Subheader component={H6}>Labels</Subheader>
-            <Item href="javascript:void(0)" on:click={() => setActive2('Family')} activated={active2 === 'Family'}>
-              <Graphic class="material-icons" aria-hidden="true">bookmark</Graphic>
-              <Text>Family</Text>
-            </Item>
-            <Item href="javascript:void(0)" on:click={() => setActive2('Friends')} activated={active2 === 'Friends'}>
-              <Graphic class="material-icons" aria-hidden="true">bookmark</Graphic>
-              <Text>Friends</Text>
-            </Item>
-            <Item href="javascript:void(0)" on:click={() => setActive2('Work')} activated={active2 === 'Work'}>
-              <Graphic class="material-icons" aria-hidden="true">bookmark</Graphic>
-              <Text>Work</Text>
-            </Item>
-          </List>
-        </Content>
-      </Drawer>
+				<Subheader component={H6}>Filter</Subheader>
 
+				<FilterComponent />
+
+				<Separator nav />
+
+				<Subheader component={H6}>Sort By</Subheader>
+
+				<Item href="#" on:click={() => setSortKey('dateNew')} activated={$sortKey === 'dateNew'}>
+					<Graphic class="material-icons" aria-hidden="true">bookmark</Graphic>
+					<Text>Date (New to Old)</Text>
+				</Item>
+				<Item href="#" on:click={() => setSortKey('dateOld')} activated={$sortKey === 'dateOld'}>
+					<Graphic class="material-icons" aria-hidden="true">bookmark</Graphic>
+					<Text>Date (Old to New)</Text>
+				</Item>
+				<Item href="#" on:click={() => setSortKey('priceHigh')} activated={$sortKey === 'priceHigh'}>
+					<Graphic class="material-icons" aria-hidden="true">bookmark</Graphic>
+					<Text>Price  (High to Low)</Text>
+				</Item>
+				<Item href="#" on:click={() => setSortKey('priceLow')} activated={$sortKey === 'priceLow'}>
+					<Graphic class="material-icons" aria-hidden="true">bookmark</Graphic>
+					<Text>Price  (Low to High)</Text>
+				</Item>
+			</List>
+		</Content>
+		</Drawer>
       <Scrim />
       <AppContent class="app-content">
         <main class="main-content">
@@ -67,9 +72,6 @@
       </AppContent>
     </div>
 </section>
-
-
-
 <style>
   .drawer-container {
     position: relative;

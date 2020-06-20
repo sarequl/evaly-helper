@@ -77,6 +77,7 @@ function goBack(){
 
 	* :global(.invoiceTitle){
 		margin-top: 15px;
+		letter-spacing: 1px;
 	}
 
 	* :global(.secondaryTitle){

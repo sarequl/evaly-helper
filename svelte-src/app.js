@@ -10,7 +10,8 @@ export const spinner = writable(false);
 export const detailedView = writable(0);
 export const scrollPos = writable(0);
 export const filterKeys = writable(['processing', 'picked', 'shipped', 'delivered']);
-
+export const sortKey = writable('dateNew');
+export const isDrawerOpen = writable(false);
 
 //get Token and save to store and LocalStorage
 export default async function getToken() {

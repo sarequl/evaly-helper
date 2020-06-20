@@ -103,7 +103,7 @@ span{
     margin-bottom: 15px;
 }
 .common{
-    margin-left: 30px;
+    margin-left: 71px;
 	font-size: 13.5px;
 	border-radius: 16px;
 	font-weight: 500;
@@ -113,16 +113,17 @@ span{
 	width: 204px;
 }
 .updatedBadge{
-    width: 90px;
-	margin-left: 170px;
 	background: #21d481;
-	box-shadow: 0px 2px 5px 0px rgba(4, 109, 60, 0.48);
 	font-size: 13.5px;
 	border-radius: 16px;
 	font-weight: 500;
 	text-align: center;
 	text-transform: uppercase;
-	display: inline-block;
+    display: inline-block;
+    width: 90px;
+	position: absolute;
+	margin-left: 250px;
+	box-shadow: 3px 2px 7px 0px rgba(45, 45, 45, 0.45);
 }
 .processing {
     background: #3c2bff;
