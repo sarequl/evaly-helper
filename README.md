@@ -26,7 +26,13 @@
 
 - Store all order information on your browser for offline access
 
-* Automatically check for new orders and updated orders in the background (10 minutes by default)
+* Sort / Filter your order by price, date, staus(processing, picked etc.)
+
+- Check Balance directly from the extension and claim cashback if any is available.
+
+* Get notified when you have pending cashback ready to claim.
+
+- Get notified when an order status is updated.
 
 ---
 
