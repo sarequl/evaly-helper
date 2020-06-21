@@ -1,6 +1,6 @@
 {
 	"name": "evaly-helper",
-	"version": "2.1.0",
+	"version": "2.2.0",
 	"description": " An Extension to display comprehensive cashback information on evaly website.",
 	"main": "svelte-src/app.js",
 	"repository": "https://github.com/shahriar-shojib/evaly-helper.git",
