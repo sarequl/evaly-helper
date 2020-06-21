@@ -178,16 +178,6 @@ function findExisting(id, array) { //returns false if the item does not exist
 	return true;
 }
 
-
-
-chrome.runtime.onInstalled.addListener(() => {
-	// create alarm after extension is installed / upgraded
-	chrome.alarms.create('refresh', { periodInMinutes: 10 });
-	firstData();
-});
-
-chrome.alarms.onAlarm.addListener(main);
-chrome.storage.local.onChanged.addListener(userListener);
 function userListener(change) {
 	if (Object.keys(change)[0] === 'token') {
 		storage.get('orders').then(({ orders }) => {
@@ -200,3 +190,17 @@ function userListener(change) {
 		}).catch(console.log);
 	}
 }
+
+//chrome specific event listeners
+
+chrome.runtime.onInstalled.addListener(() => {
+	// create alarm after extension is installed / upgraded
+	chrome.alarms.create('refresh', { periodInMinutes: 10 });
+	firstData();
+});
+
+chrome.alarms.onAlarm.addListener(main);
+chrome.runtime.onStartup.addListener(main);
+
+chrome.storage.local.onChanged.addListener(userListener);
+

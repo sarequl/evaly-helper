@@ -1,11 +1,11 @@
 <script> 
 import { onMount } from 'svelte';
 import TopAppBar, { Row, Section, Title } from '@smui/top-app-bar';
-import IconButton from '@smui/icon-button';
+import IconButton, { Icon } from '@smui/icon-button';
 import LinearProgress from '@smui/linear-progress';
 import ActionButton from './ActionButton.svelte';
 import ReloadButton from './ReloadButton.svelte';
-import { getBalance, spinner, claimBalance } from '../app';
+import { getBalance, spinner, claimBalance, detailedView } from '../app';
 
 let balance = 0;
 let claim = false;
@@ -16,6 +16,7 @@ function checkBalance(){
 		.then(data => {
 			balance = data.balance;
 			if(data.cashback_balance !== 0){
+				pending = data.cashback_balance;
 				claim = true;
 			}
 		})
@@ -24,13 +25,21 @@ function checkBalance(){
 onMount(checkBalance);
 chrome.storage.local.onChanged.addListener(checkBalance);
 export let clickHandler;
+let isOpen = false;
 </script>
 
 <div class="top-app-bar-container">
 	<TopAppBar variant="static">
 		<Row>
 			<Section>
-				<IconButton toggle on:click={() => clickHandler()} class="material-icons">menu</IconButton>
+				{#if $detailedView === 0 }
+					<IconButton on:click={clickHandler} toggle bind:pressed={isOpen}>
+						<Icon class="material-icons" >menu</Icon>
+						<Icon class="material-icons" on>menu_open</Icon>
+					</IconButton>
+				{:else}
+					<!-- <IconButton><Icon class="material-icons">menu</Icon></IconButton> -->
+				{/if}
 				<Title class="appBarTitle">Evaly Helper</Title>
 			</Section>
 			<Section align="end" toolbar>

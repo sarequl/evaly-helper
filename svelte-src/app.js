@@ -62,5 +62,5 @@ export async function claimBalance(callBack) {
 	const { token } = await storage.get('token').catch(console.log);
 	const account = new EvalyAccount(token);
 	await account.claimCashback();
-	callBack();
+	setTimeout(callBack, 1000);
 }

@@ -40,7 +40,7 @@ export default class EvalyAccount {
 	}
 	async claimCashback() {
 		const { username } = await storage.get('username');
-		const res = await fetch(`https://api.evaly.com.bd/auth/user-info-pay/${username}/`, {
+		const res = await fetch(`https://api.evaly.com.bd/pay/apply/cashback-balance/${username}/`, {
 			'headers': {
 				'authorization': `Bearer ${this.token}`,
 			},
