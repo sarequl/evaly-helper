@@ -48,11 +48,15 @@
 
 * Run **npm install**
 
-- Open chrome://extensions on your browser and Enable developer mode
+- Run **npm run dev**
 
-* Click load unpacked and select your folder which you cloned
+* Open chrome://extensions on your browser and Enable developer mode
 
-- Get Cracking and open PR/Issues 👏
+- Click load unpacked and select your folder which you cloned
+
+* Get Cracking and open PR/Issues 👏
+
+
 
 ---
 
