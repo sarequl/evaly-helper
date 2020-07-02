@@ -41,29 +41,28 @@ function setSortKey(value) {
 		<Content>
 			<List>
 				<Separator nav />
-
 				<Subheader component={H6}>Filter</Subheader>
-
 				<FilterComponent />
-
 				<Separator nav />
-
 				<Subheader component={H6}>Sort By</Subheader>
-
+				<Item href="#" on:click={() => setSortKey('updatedNew')} activated={$sortKey === 'updatedNew'}>
+					<Graphic class="material-icons" aria-hidden="true">update</Graphic>
+					<Text>Recently Updated</Text>
+				</Item>
 				<Item href="#" on:click={() => setSortKey('dateNew')} activated={$sortKey === 'dateNew'}>
-					<Graphic class="material-icons" aria-hidden="true">bookmark</Graphic>
+					<Graphic class="material-icons" aria-hidden="true">sort</Graphic>
 					<Text>Date (New to Old)</Text>
 				</Item>
 				<Item href="#" on:click={() => setSortKey('dateOld')} activated={$sortKey === 'dateOld'}>
-					<Graphic class="material-icons" aria-hidden="true">bookmark</Graphic>
+					<Graphic class="material-icons" aria-hidden="true">sort</Graphic>
 					<Text>Date (Old to New)</Text>
 				</Item>
 				<Item href="#" on:click={() => setSortKey('priceHigh')} activated={$sortKey === 'priceHigh'}>
-					<Graphic class="material-icons" aria-hidden="true">bookmark</Graphic>
+					<Graphic class="material-icons" aria-hidden="true">sort</Graphic>
 					<Text>Price  (High to Low)</Text>
 				</Item>
 				<Item href="#" on:click={() => setSortKey('priceLow')} activated={$sortKey === 'priceLow'}>
-					<Graphic class="material-icons" aria-hidden="true">bookmark</Graphic>
+					<Graphic class="material-icons" aria-hidden="true">sort</Graphic>
 					<Text>Price  (Low to High)</Text>
 				</Item>
 			</List>

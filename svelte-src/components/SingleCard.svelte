@@ -113,17 +113,18 @@ span{
 	width: 204px;
 }
 .updatedBadge{
-	background: #21d481;
 	font-size: 13.5px;
 	border-radius: 16px;
 	font-weight: 500;
 	text-align: center;
 	text-transform: uppercase;
     display: inline-block;
-    width: 90px;
-	position: absolute;
-	margin-left: 250px;
 	box-shadow: 3px 2px 7px 0px rgba(45, 45, 45, 0.45);
+    background: #21d481;
+	width: 90px;
+	position: absolute;
+	top: 65px;
+	right: 10px;
 }
 .processing {
     background: #3c2bff;

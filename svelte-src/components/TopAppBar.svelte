@@ -5,7 +5,7 @@ import IconButton, { Icon } from '@smui/icon-button';
 import LinearProgress from '@smui/linear-progress';
 import ActionButton from './ActionButton.svelte';
 import ReloadButton from './ReloadButton.svelte';
-import { getBalance, spinner, claimBalance, detailedView } from '../app';
+import { getBalance, spinner, claimBalance, detailedView, isDrawerOpen } from '../app';
 
 let balance = 0;
 let claim = false;
@@ -18,14 +18,14 @@ function checkBalance(){
 			if(data.cashback_balance !== 0){
 				pending = data.cashback_balance;
 				claim = true;
+			} else{
+				pending = 0;//show balance after cashback
+				claim = false;
 			}
 		})
 		.catch(console.log);
 }
 onMount(checkBalance);
-chrome.storage.local.onChanged.addListener(checkBalance);
-export let clickHandler;
-let isOpen = false;
 </script>
 
 <div class="top-app-bar-container">
@@ -33,7 +33,7 @@ let isOpen = false;
 		<Row>
 			<Section>
 				{#if $detailedView === 0 }
-					<IconButton on:click={clickHandler} toggle bind:pressed={isOpen}>
+					<IconButton toggle bind:pressed={$isDrawerOpen}>
 						<Icon class="material-icons" >menu</Icon>
 						<Icon class="material-icons" on>menu_open</Icon>
 					</IconButton>

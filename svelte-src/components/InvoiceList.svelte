@@ -43,6 +43,17 @@ function sort(order){
 			case 'priceLow':
 				orders2 = orders2.sort((a,b) => parseInt(a.total) - parseInt(b.total));
 				break;
+			case 'updatedNew':
+				orders2 = orders2.sort((a,b) => {
+					if (a.isUpdated == null) {
+						return 1;
+					} else if (b.isUpdated == null) {
+						return -1;
+					} else{
+						return new Date(b.isUpdated) < new Date(a.isUpdated) ? -1 : 1;
+					}
+				});
+				break;
 			default:
 				orders2 = orders2.sort((a,b) => new Date(b.date) - new Date(a.date));
 				break;

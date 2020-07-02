@@ -1,0 +1,11 @@
+{
+	"useTabs": true,
+	"tabWidth": 4,
+	"trailingComma": "es5",
+	"svelteSortOrder": "scripts-markup-styles",
+	"svelteStrictMode": true,
+	"svelteBracketNewLine": true,
+	"svelteAllowShorthand": false,
+	"vueIndentScriptAndStyle": false,
+	"jsxBracketSameLine": false
+}

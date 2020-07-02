@@ -15,20 +15,11 @@ import getToken, { isDrawerOpen } from './app';
 //logic
 let loggedIn = false;
 onMount(() => getToken().then(isLoggedIn => loggedIn = isLoggedIn));
-function drawer(){
-    $isDrawerOpen = !$isDrawerOpen;
-    window.scrollTo({
-        left:0,
-        top:0,
-        behavior: 'smooth'
-    })
-}
-
 </script>
 
 <!-- load components -->
 {#if loggedIn}
-    <AppBar clickHandler={drawer}/>
+    <AppBar />
     <AppDrawer>
         <InvoiceList />
     </AppDrawer>
