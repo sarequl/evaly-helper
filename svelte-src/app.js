@@ -8,12 +8,12 @@ export const token = writable('none');
 export const spinner = writable(false);
 export const detailedView = writable(0);
 export const scrollPos = writable(0);
-export const filterKeys = writable([ 'processing', 'picked', 'shipped', 'delivered' ]);
+export const filterKeys = writable(['processing', 'picked', 'shipped', 'confirmed', 'pending']);
 export const sortKey = writable('updatedNew');
 export const isDrawerOpen = writable(false);
 
 //get Token and save to store and LocalStorage
-export default async function getToken () {
+export default async function getToken() {
 	return new Promise(resolve => {
 		// eslint-disable-next-line no-undef
 		chrome.cookies.get({ url: 'https://evaly.com.bd', name: 'token' }, cookie => {
@@ -29,7 +29,7 @@ export default async function getToken () {
 }
 
 //main function to get orders and save to localStorage
-export async function main () {
+export async function main() {
 	spinner.set(true);
 	setTimeout(() => {
 		spinner.set(false);
@@ -37,7 +37,7 @@ export async function main () {
 }
 
 //parse dare withtout seconds
-export function parseDate (date) {
+export function parseDate(date) {
 	const dateStr = new Date(date).toDateString();
 	const time = new Date(date).toLocaleTimeString();
 	const arr = time.split(':');
@@ -47,7 +47,7 @@ export function parseDate (date) {
 }
 
 //calculate how many days ago a past date was
-export function calcDays (strDate) {
+export function calcDays(strDate) {
 	const currentDate = Date.now();
 	const time = currentDate - new Date(strDate);
 	const days = Math.round(time / 1000 / 60 / 60 / 24);
@@ -56,14 +56,14 @@ export function calcDays (strDate) {
 }
 
 //fetch balance information
-export async function getBalance () {
+export async function getBalance() {
 	const { token } = await storage.get('token').catch(console.log);
 	const account = new EvalyAccount(token);
 	return await account.getBalance();
 }
 
 //claim pending cashhback information
-export async function claimBalance (callBack) {
+export async function claimBalance(callBack) {
 	const { token } = await storage.get('token').catch(console.log);
 	const account = new EvalyAccount(token);
 	await account.claimCashback();

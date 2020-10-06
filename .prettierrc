@@ -1,11 +1,14 @@
 {
-	"useTabs": true,
-	"tabWidth": 4,
-	"trailingComma": "es5",
 	"svelteSortOrder": "scripts-markup-styles",
-	"svelteStrictMode": true,
-	"svelteBracketNewLine": true,
+	"svelteStrictMode": false,
+	"svelteBracketNewLine": false,
 	"svelteAllowShorthand": false,
-	"vueIndentScriptAndStyle": false,
-	"jsxBracketSameLine": false
+	"trailingComma": "es5",
+	"arrowParens": "avoid",
+	"endOfLine": "lf",
+	"tabWidth": 4,
+	"useTabs": true,
+	"semi": true,
+	"singleQuote": true,
+	"printWidth": 150
 }
