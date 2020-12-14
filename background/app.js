@@ -41,7 +41,7 @@ async function getToken() {
 	});
 }
 
-export default class EvalyAccount {
+class EvalyAccount {
 	constructor(token) {
 		this.baseURL = 'https://api.evaly.com.bd';
 		this.headers = { authorization: `Bearer ${token}` };
