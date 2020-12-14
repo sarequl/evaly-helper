@@ -1,8 +1,6 @@
 /* eslint-disable no-undef */
 class Storage {
-	constructor() {
-		this.type = 'chromeLocalStorage';
-	}
+	constructor() {}
 
 	set(object) {
 		return new Promise((resolve, reject) => {
@@ -33,7 +31,7 @@ async function getToken() {
 	return new Promise(resolve => {
 		// eslint-disable-next-line no-undef
 		chrome.cookies.get({ url: 'https://evaly.com.bd', name: 'token' }, cookie => {
-			if (cookie.value !== null) {
+			if (cookie?.value !== null) {
 				storage.set({ token: cookie.value });
 				resolve(true);
 			} else {
@@ -43,19 +41,14 @@ async function getToken() {
 	});
 }
 
-class EvalyAccount {
+export default class EvalyAccount {
 	constructor(token) {
-		this.token = token;
+		this.baseURL = 'https://api.evaly.com.bd';
+		this.headers = { authorization: `Bearer ${token}` };
 	}
 
 	async getOrders({ cancel, pending }) {
-		const res = await fetch('https://api.evaly.com.bd/core/custom/orders/?page=1&limit=1000', {
-			headers: {
-				authorization: `Bearer ${this.token}`,
-			},
-			referrer: 'https://evaly.com.bd/',
-			method: 'GET',
-		}).then(res => res.json());
+		const res = await this.get('/core/custom/orders/?page=1&limit=1000');
 
 		if (cancel === false && pending === true) {
 			const orders = res.results.filter(order => order.order_status !== 'cancel');
@@ -67,48 +60,33 @@ class EvalyAccount {
 			return orders;
 		}
 
-		const orders = res.results.filter(order => !(order.order_status === 'cancel' || order.order_status === 'pending'));
+		const orders = res.results.filter(
+			order => !(order.order_status === 'cancel' || order.order_status === 'pending')
+		);
+
 		return orders;
 	}
 
 	async getBalance() {
 		const { username } = await storage.get('username');
-		const res = await fetch(`https://api.evaly.com.bd/auth/user-info-pay/${username}/`, {
-			headers: {
-				authorization: `Bearer ${this.token}`,
-			},
-			referrer: 'https://evaly.com.bd/',
-			method: 'GET',
-		}).then(res => res.json());
+		const res = await this.get(`pay/complete-balance/${username}`);
 		return res.data;
 	}
 
 	async claimCashback() {
 		const { username } = await storage.get('username');
-		const res = await fetch(`https://api.evaly.com.bd/auth/user-info-pay/${username}/`, {
-			headers: {
-				authorization: `Bearer ${this.token}`,
-			},
-			referrer: 'https://evaly.com.bd/',
-			method: 'GET',
-		}).then(res => res.json());
+		const res = await this.get(`pay/apply/cashback-balance/${username}`);
 		return res.message;
 	}
-}
+	async getInvoice(invoiceID) {
+		const { data = history } = await this.get(`/core/orders/histories/${invoiceID}/`);
+		const details = await this.get(`/core/custom/orders/${invoiceID}/`);
+		return { ...details, history: { ...data.histories } };
+	}
 
-async function getInvoice(invoiceID) {
-	const { token } = await storage.get('token');
-	const { data = history } = await fetch(`https://api.evaly.com.bd/core/orders/histories/${invoiceID}/`, {
-		headers: {
-			authorization: 'Bearer ' + token,
-		},
-	}).then(res => (res.ok ? res.json() : new Error('request failed')));
-	const details = await fetch(`https://api.evaly.com.bd/core/custom/orders/${invoiceID}/`, {
-		headers: {
-			authorization: 'Bearer ' + token,
-		},
-	}).then(res => res.json());
-	return { ...details, history: { ...data.histories } };
+	get(endpoint) {
+		return fetch(`${this.baseURL}/${endpoint}`, { headers: this.headers }).then(r => r.json());
+	}
 }
 
 async function firstData() {
@@ -116,9 +94,10 @@ async function firstData() {
 		const { token } = await storage.get('token');
 		const account = new EvalyAccount(token);
 		const orders = await account.getOrders({ cancel: false, pending: true });
+
 		const orderWithStatus = await Promise.all(
 			orders.map(async order => {
-				const { history, shop } = await getInvoice(order.invoice_no);
+				const { history, shop } = await account.getInvoice(order.invoice_no);
 				return { history, shop, ...order };
 			})
 		);
@@ -167,6 +146,7 @@ async function main() {
 			return { history, shop, ...order };
 		})
 	);
+
 	await storage.set({ orders: newData });
 	const balance = await account.getBalance();
 	if (balance.cashback_balance !== 0) {
@@ -182,25 +162,18 @@ async function main() {
 function findExisting(id, array) {
 	//returns false if the item does not exist
 	const data = array.find(el => el.invoice_no === id);
-	if (data === undefined) return false;
+	if (!data) return false;
 	return true;
 }
 
-function userListener(change) {
+async function userListener(change) {
 	if (Object.keys(change)[0] === 'token') {
-		storage
-			.get('orders')
-			.then(({ orders }) => {
-				getInvoice(orders[0].invoice_no)
-					.then(res => {
-						if (res.detail === 'Not found.') {
-							console.log('user changed resetting data');
-							firstData().then(() => console.log('done'));
-						}
-					})
-					.catch(firstData);
-			})
-			.catch(console.log);
+		const { orders } = await storage.get('orders');
+		const res = await getInvoice(orders[0].invoice_no);
+		if (res.detail === 'Not found.') {
+			console.log('user changed resetting data');
+			firstData().then(() => console.log('done'));
+		}
 	}
 }
 

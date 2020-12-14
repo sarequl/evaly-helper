@@ -1,9 +1,7 @@
 /* eslint-disable no-undef */
 
 class Storage {
-	constructor() {
-		this.type = 'chromeLocalStorage';
-	}
+	constructor() {}
 
 	set(object) {
 		return new Promise((resolve, reject) => {
@@ -18,8 +16,10 @@ class Storage {
 	get(key) {
 		return new Promise((resolve, reject) => {
 			chrome.storage.local.get(key, data => {
-				if (Object.keys(data).length === 0 && data.constructor === Object)
+				if (Object.keys(data).length === 0 && data.constructor === Object) {
 					reject('no data returned by localStorage');
+				}
+
 				resolve(data);
 			});
 		});

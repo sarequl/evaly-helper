@@ -24,6 +24,7 @@
 		"sass": "^1.26.8",
 		"serve": "^11.3.2",
 		"svelte": "^3.31.0",
-		"svelte-material-ui": "latest"
+		"svelte-material-ui": "latest",
+		"postcss": "^8.2.1"
 	}
 }

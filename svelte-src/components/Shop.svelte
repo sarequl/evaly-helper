@@ -1,5 +1,5 @@
 <script>
-	import Paper, { Title, Content } from '@smui/paper';
+	import Paper, { Content } from '@smui/paper';
 
 	export let shopDetails;
 	let { logo_image, name, slug, contact_number, address } = shopDetails;

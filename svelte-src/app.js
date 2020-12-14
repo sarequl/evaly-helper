@@ -17,7 +17,7 @@ export default async function getToken() {
 	return new Promise(resolve => {
 		// eslint-disable-next-line no-undef
 		chrome.cookies.get({ url: 'https://evaly.com.bd', name: 'token' }, cookie => {
-			if (cookie.value !== null) {
+			if (cookie?.value !== null) {
 				token.set(cookie.value);
 				storage.set({ token: cookie.value });
 				resolve(true);

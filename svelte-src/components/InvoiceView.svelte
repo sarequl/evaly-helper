@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-	import { token, spinner, detailedView } from '../app';
+	import { spinner, detailedView } from '../app';
 	import getInvoice from '../modules/invoice';
 	import Fab, { Label, Icon } from '@smui/fab';
 	import Paper, { Title, Content } from '@smui/paper';
