@@ -4,7 +4,6 @@ import { sortKey, isDrawerOpen, scrollPos } from '../app';
 import storage from '../modules/storage';
 
 import Drawer, { AppContent, Content, Header, Title, Subtitle, Scrim } from '@smui/drawer';
-import Button, { Label } from '@smui/button';
 import List, { Item, Text, Graphic, Separator, Subheader } from '@smui/list';
 import H6 from '@smui/common/H6.svelte';
 

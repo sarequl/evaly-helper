@@ -1,21 +1,13 @@
 <script>
-	import ActionButton from "./ActionButton.svelte";
-	import Paper, { Title, Content } from "@smui/paper";
-	import { parseDate, calcDays, detailedView, scrollPos } from "../app";
+	import ActionButton from './ActionButton.svelte';
+	import Paper, { Title, Content } from '@smui/paper';
+	import { parseDate, calcDays, detailedView, scrollPos } from '../app';
 	export let orderDetails;
-	const {
-		order_status,
-		invoice_no,
-		history,
-		date,
-		total,
-		shop,
-		isUpdated,
-	} = orderDetails;
+	const { order_status, invoice_no, history, date, total, shop, isUpdated } = orderDetails;
 
 	function showUpdateBadge() {
 		const currentDate = Date.now();
-		if ("isUpdated" in orderDetails) {
+		if ('isUpdated' in orderDetails) {
 			const time = currentDate - isUpdated;
 			if (time / 1000 / 60 / 60 / 24 < 7) {
 				return true;
@@ -35,14 +27,10 @@
 		<div class="invoice-card">
 			<Title class="title">
 				{invoice_no}
-				<div class="{order_status} common">
-					{history[1].order_status}
-					<span class="material-icons">arrow_right_alt</span>
-					{order_status}
-				</div>
+				<div class="{order_status} common">{history[1].order_status} <span class="material-icons">arrow_right_alt</span> {order_status}</div>
 			</Title>
 			<Content>
-				<Paper class="detailsPaper" elevation="{9}" color="{'primary'}">
+				<Paper class="detailsPaper" elevation={9} color={'primary'}>
 					<Title class="amount">
 						TK
 						{parseInt(total).toFixed()}
@@ -55,12 +43,7 @@
 						<p>{parseDate(date)}</p>
 						<p>Ordered {calcDays(date)}</p>
 						<div class="detailsButton">
-							<ActionButton
-								clickHandler="{() => changeView(invoice_no)}"
-								icon="{'arrow_forward'}"
-								text="{'Go To Details'}"
-								first="{false}"
-							/>
+							<ActionButton clickHandler={() => changeView(invoice_no)} icon={'arrow_forward'} text={'Go To Details'} first={false} />
 						</div>
 					</Content>
 				</Paper>
@@ -104,20 +87,14 @@
 		color: #fff;
 		background-color: #215dfd;
 		background-image: linear-gradient(62deg, #215dfd 0%, #21f1ff 100%);
-		box-shadow: 0 4px 4px rgba(54, 176, 247, 0.22),
-			0 5px 5px rgba(32, 141, 243, 0.2);
+		box-shadow: 0 4px 4px rgba(54, 176, 247, 0.22), 0 5px 5px rgba(32, 141, 243, 0.2);
 		transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 		padding: 10px;
 	}
 	* :global(.paper-bg:hover) {
-		background-image: linear-gradient(
-			62deg,
-			rgb(33, 93, 253) 0%,
-			rgb(33, 241, 255) 100%
-		);
+		background-image: linear-gradient(62deg, rgb(33, 93, 253) 0%, rgb(33, 241, 255) 100%);
 		/* opacity: 0.8; */
-		box-shadow: 0 14px 28px rgba(28, 141, 233, 0.568),
-			0 10px 10px rgba(35, 183, 241, 0.22);
+		box-shadow: 0 14px 28px rgba(28, 141, 233, 0.568), 0 10px 10px rgba(35, 183, 241, 0.22);
 	}
 	.paper {
 		margin-bottom: 15px;

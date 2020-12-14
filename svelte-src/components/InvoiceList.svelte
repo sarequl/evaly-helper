@@ -1,10 +1,10 @@
 <script>
-	import { onMount, afterUpdate } from "svelte";
-	import { get } from "svelte/store";
-	import { detailedView, filterKeys, sortKey, scrollPos } from "../app";
-	import storage from "../modules/storage";
-	import SingleCard from "./SingleCard.svelte";
-	import InvoiceView from "./InvoiceView.svelte";
+	import { onMount, afterUpdate } from 'svelte';
+	import { get } from 'svelte/store';
+	import { detailedView, filterKeys, sortKey, scrollPos } from '../app';
+	import storage from '../modules/storage';
+	import SingleCard from './SingleCard.svelte';
+	import InvoiceView from './InvoiceView.svelte';
 
 	let orders = [];
 	let orders2 = [];
@@ -13,9 +13,7 @@
 		try {
 			let filteredArr = [];
 			for (let i = 0; i < values.length; i++) {
-				let newArr = orders.filter(
-					(order) => order.order_status === values[i]
-				);
+				let newArr = orders.filter(order => order.order_status === values[i]);
 				for (let j = 0; j < newArr.length; j++) {
 					filteredArr.push(newArr[j]);
 				}
@@ -30,43 +28,31 @@
 	function sort(order) {
 		try {
 			switch (order) {
-				case "dateNew":
-					orders2 = orders2.sort(
-						(a, b) => new Date(b.date) - new Date(a.date)
-					);
+				case 'dateNew':
+					orders2 = orders2.sort((a, b) => new Date(b.date) - new Date(a.date));
 					break;
-				case "dateOld":
-					orders2 = orders2.sort(
-						(a, b) => new Date(a.date) - new Date(b.date)
-					);
+				case 'dateOld':
+					orders2 = orders2.sort((a, b) => new Date(a.date) - new Date(b.date));
 					break;
-				case "priceHigh":
-					orders2 = orders2.sort(
-						(a, b) => parseInt(b.total) - parseInt(a.total)
-					);
+				case 'priceHigh':
+					orders2 = orders2.sort((a, b) => parseInt(b.total) - parseInt(a.total));
 					break;
-				case "priceLow":
-					orders2 = orders2.sort(
-						(a, b) => parseInt(a.total) - parseInt(b.total)
-					);
+				case 'priceLow':
+					orders2 = orders2.sort((a, b) => parseInt(a.total) - parseInt(b.total));
 					break;
-				case "updatedNew":
+				case 'updatedNew':
 					orders2 = orders2.sort((a, b) => {
 						if (a.isUpdated == null) {
 							return 1;
 						} else if (b.isUpdated == null) {
 							return -1;
 						} else {
-							return new Date(b.isUpdated) < new Date(a.isUpdated)
-								? -1
-								: 1;
+							return new Date(b.isUpdated) < new Date(a.isUpdated) ? -1 : 1;
 						}
 					});
 					break;
 				default:
-					orders2 = orders2.sort(
-						(a, b) => new Date(b.date) - new Date(a.date)
-					);
+					orders2 = orders2.sort((a, b) => new Date(b.date) - new Date(a.date));
 					break;
 			}
 		} catch (error) {
@@ -76,7 +62,7 @@
 
 	async function readOrders() {
 		try {
-			let data = await storage.get("orders").catch(console.log);
+			let data = await storage.get('orders').catch(console.log);
 			orders = [...data.orders];
 			orders2 = [...data.orders];
 			filter(get(filterKeys));
@@ -106,7 +92,7 @@
 	{#if $detailedView === 0}
 		{#if orders2.length !== 0}
 			{#each orders2 as order (order.invoice_no)}
-				<SingleCard orderDetails="{order}" />
+				<SingleCard orderDetails={order} />
 			{/each}
 		{:else}
 			<div class="loader">Loading...</div>

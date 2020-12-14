@@ -1,4 +1,4 @@
-@import "@material/theme/color-palette";
+@import '@material/theme/color-palette';
 @import 'material-icons/iconfont/material-icons.scss';
 $mdc-theme-primary: #1152df;
 $mdc-theme-on-primary: #ffffff;
@@ -12,13 +12,5 @@ $mdc-theme-background: #ffffff;
 $mdc-shape-small: 4px;
 $mdc-shape-medium: 4px;
 $mdc-shape-large: 0px;
-$mdc-typography-font-family: -apple-system,
-BlinkMacSystemFont,
-"Segoe UI",
-"Roboto",
-"Helvetica Neue",
-Arial,
-sans-serif,
-"Apple Color Emoji",
-"Segoe UI Emoji",
-"Segoe UI Symbol" !default;
+$mdc-typography-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+	'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol' !default;

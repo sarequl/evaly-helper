@@ -1,30 +1,29 @@
 {
 	"name": "evaly-helper",
-	"version": "2.2.0",
+	"version": "2.3.0",
 	"description": " An Extension to display comprehensive cashback information on evaly website.",
 	"main": "svelte-src/app.js",
 	"repository": "https://github.com/shahriar-shojib/evaly-helper.git",
 	"scripts": {
 		"build": "rollup -c build-prod.js",
 		"serve": "serve ./popup",
-		"watch": "rollup -c build-dev.js --watch",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"watch": "rollup -c build-dev.js --watch"
 	},
 	"author": "Shahriar Shojib <shahriar_shojib@hotmail.com>",
 	"license": "MIT",
 	"devDependencies": {
 		"@material/typography": "^3.1.0",
+		"@rollup/plugin-commonjs": "latest",
+		"@rollup/plugin-node-resolve": "latest",
 		"material-icons": "^0.3.1",
-		"node-sass": "^4.14.1",
-		"rollup": "^1.7.0",
-		"rollup-plugin-commonjs": "^10.1.0",
-		"rollup-plugin-node-resolve": "^5.2.0",
-		"rollup-plugin-postcss": "^2.9.0",
-		"rollup-plugin-svelte": "^5.2.3",
-		"rollup-plugin-terser": "^6.1.0",
+		"node-sass": "latest",
+		"rollup": "latest",
+		"rollup-plugin-postcss": "latest",
+		"rollup-plugin-svelte": "latest",
+		"rollup-plugin-terser": "latest",
 		"sass": "^1.26.8",
 		"serve": "^11.3.2",
-		"svelte": "^3.23.2",
-		"svelte-material-ui": "^1.0.0-beta.21"
+		"svelte": "^3.31.0",
+		"svelte-material-ui": "latest"
 	}
 }
