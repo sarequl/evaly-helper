@@ -1,3 +1,5 @@
 node_modules
-popup/dist
+popup/dist/*.js
+popup/dist/*.css
+
 yarn.lock
